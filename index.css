@@ -1,0 +1,45 @@
+html, body {
+    background: rgb(215, 215, 215);
+}
+
+main {
+    width: 30%;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+}
+
+
+#typingDisplay {
+    position: relative;
+}
+#quote p {
+    opacity: 50%;
+}
+#userInput {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#userInput p {
+    margin: 0 auto;
+    /* text wrapping error  */
+}
+
+
+input {
+    width: 100%;
+}
+
+#userInput .wrong {
+    color: red;
+}
+
+p {
+    /* 
+    In JS adding " " to the (p) element does not appear.
+    pre-wrap preserves whitespace so " " does appear.
+     */
+    white-space: pre-wrap;
+}

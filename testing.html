@@ -1,0 +1,27 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <input type="text">
+
+    <script>
+        const input = document.querySelector("input");
+        let index = 0;
+        input.addEventListener("keydown", (e)=>{
+            console.log("fired")
+            index += 1;
+            if (index === 3) {
+                input.value = null;
+                e.preventDefault()
+                index = 0;
+            }
+            console.log("end")
+        })
+    </script>
+</body>
+</html>

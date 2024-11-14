@@ -7,6 +7,7 @@
 - Some quote when pressing space in the beginning renders wrong letters in incorrect places
 1. Reload until you get quote that starts with "You will face many defeats in life...."
 2. Press space
+- Speed is null when starting to type for ~1 second then back to normal
 ### TODO
 - Calculate WPM
 - Location in quote indicator 

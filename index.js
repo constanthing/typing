@@ -93,16 +93,18 @@ const time = document.querySelector("#time");
 async function startCount() {
   while (true) {
     const elapsedTime = (performance.now() - startTime) / 1000;
-    console.log(elapsedTime)
+    console.log(rights)
     speed.innerText = parseInt(rights / (elapsedTime/60));
     time.innerText = parseInt((performance.now() - startTime) / 1000);
     await new Promise((resolve, reject) => {
       setTimeout(()=>{
         resolve()
-      }, 1)
+      }, 1000)
     })
   }
 }
+
+let wordRight = 0;
 
 input.addEventListener("keydown", (e)=>{
   if (startTime == null) {
@@ -139,8 +141,10 @@ input.addEventListener("keydown", (e)=>{
 
         inputted.push(" ")
 
-        rights += 1;
-
+        const t = parseInt((((wordRight * 100)/word.length)/100));
+        console.log(t)
+        rights += t;
+        wordRight = 0;
         letterIndex = 0;
         wordIndex += 1;
         displayIndex += 1;
@@ -155,6 +159,7 @@ input.addEventListener("keydown", (e)=>{
             wrongs+=1;
         } else {
             inputted.push(e.key)
+            wordRight += 1;
         }
         displayIndex += 1;
         letterIndex += 1;

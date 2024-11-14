@@ -89,9 +89,13 @@ input.addEventListener("keydown", (e)=>{
     if (e.key == "Shift" || e.key == "Meta") {
         // do nothing
     } else if (e.key == "Backspace") {
-        inputted.pop()
-        letterIndex -= 1;
-        displayIndex -= 1;
+        // do not want to let user to backspace into previous word
+        // keeps them in the same word
+        if (letterIndex != 0) {
+            inputted.pop()
+            letterIndex -= 1;
+            displayIndex -= 1;
+        }
     } else if (e.key == " " || letterIndex == word.length) {
         // currently counting spaces as wrong too (might cause issues)
 

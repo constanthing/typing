@@ -80,9 +80,35 @@ let letterIndex = 0;
 let word = quote[wordIndex];
 
 
+let wrongs = 0;
+let rights = 0;
+
+let startTime = null;
+
 const debug = document.querySelector("#debug");
 
+const speed = document.querySelector("#speed");
+
+const time = document.querySelector("#time");
+async function startCount() {
+  while (true) {
+    const elapsedTime = (performance.now() - startTime) / 1000;
+    console.log(elapsedTime)
+    speed.innerText = parseInt(rights / (elapsedTime/60));
+    time.innerText = parseInt((performance.now() - startTime) / 1000);
+    await new Promise((resolve, reject) => {
+      setTimeout(()=>{
+        resolve()
+      }, 1)
+    })
+  }
+}
+
 input.addEventListener("keydown", (e)=>{
+  if (startTime == null) {
+    startTime = performance.now();
+    startCount()
+  }
     // e.code ignores keyboard layout which can lead to issues
     // e.key is better
 
@@ -107,10 +133,13 @@ input.addEventListener("keydown", (e)=>{
             const wrong = "<span class=wrong>" + word[letterIndex] + "</span>";
             inputted.push(wrong)
             letterIndex += 1;
+            wrongs+=1;
           }
         }
 
         inputted.push(" ")
+
+        rights += 1;
 
         letterIndex = 0;
         wordIndex += 1;
@@ -123,6 +152,7 @@ input.addEventListener("keydown", (e)=>{
             // don't display the inputted
             const wrong = "<span class=wrong>" + word[letterIndex] + "</span>";
             inputted.push(wrong)
+            wrongs+=1;
         } else {
             inputted.push(e.key)
         }
@@ -135,6 +165,8 @@ input.addEventListener("keydown", (e)=>{
     Word: ${word} \n
     Display index: ${displayIndex} \n
     Display letter: ${displayLetters[displayIndex]} \n
+    Wrongs: ${wrongs} \n
+    Rights: ${rights} \n
     `;
 
     userInput.innerHTML = inputted.join("")

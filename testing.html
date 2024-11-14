@@ -57,12 +57,36 @@
     </style>
 </head>
 <body>
+    <!-- 
+    
+    current amount letters
+    current time
+    ___ over 60 secons (minute bc WPM word per minute)
+
+    scenario
+    12 letters
+    15 seconds
+
+    -->
 
     <p>Lorem <span id="indicator">k</span>ipsum dolor s<span id="ind">i</span>t, amet <span id="ind">j</span>onsectetur adipis<span id="ind">i</span>cing elit. Velit, culpa!</p>
     
     <input type="text">
 
+    <button id="start">Start</button>
+    <button id="end">End</button>
+
     <script>
+
+        let [start, end] = document.querySelectorAll("button");
+        let time = new Date();
+        start.addEventListener("click", ()=>{
+            time = time.getTime();
+        })
+        end.addEventListener("click", ()=>{
+            time = Math.round((new Date().getTime() - time) / 1000);
+            console.log(time)
+        })
 
         const input = document.querySelector("input");
         let index = 0;

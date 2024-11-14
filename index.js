@@ -62,14 +62,9 @@ for (let w of quote) {
 }
 let displayIndex = 0;
 
-
-
-
 quote = quote .split(" ")
 
-
 const userInput = document.querySelector("#userInput p");
-
 
 const input = document.querySelector("input");
 input.focus()
@@ -79,23 +74,32 @@ let wordIndex = 0;
 let letterIndex = 0;
 let word = quote[wordIndex];
 
-
+let whereInQuote = 0;
+// wrong letters
 let wrongs = 0;
+
+// right words
 let rights = 0;
+// right letters in the word
+let wordRight = 0;
 
 let startTime = null;
 
 const debug = document.querySelector("#debug");
-
-const speed = document.querySelector("#speed");
-
+const speed = document.querySelector("#speed span");
+const rawSpeed = document.querySelector("#rawSpeed span");
+const accuracy = document.querySelector("#accuracy span");
 const time = document.querySelector("#time");
+
 async function startCount() {
   while (true) {
     const elapsedTime = (performance.now() - startTime) / 1000;
-    console.log(rights)
+    rawSpeed.innerText = parseInt(wordIndex / (elapsedTime/60));
     speed.innerText = parseInt(rights / (elapsedTime/60));
     time.innerText = parseInt((performance.now() - startTime) / 1000);
+    // accuracy calculated using how many wrongs we got from the letters (space not taken into calculation)
+    accuracy.innerText = parseInt((((whereInQuote - wrongs) * 100))/whereInQuote)
+    // accuracy.innerText = parseInt((rights * 100) / quote.length) + "%";
     await new Promise((resolve, reject) => {
       setTimeout(()=>{
         resolve()
@@ -104,7 +108,6 @@ async function startCount() {
   }
 }
 
-let wordRight = 0;
 
 input.addEventListener("keydown", (e)=>{
   if (startTime == null) {
@@ -123,9 +126,16 @@ input.addEventListener("keydown", (e)=>{
             inputted.pop()
             letterIndex -= 1;
             displayIndex -= 1;
+            whereInQuote -= 1;
         }
     } else if (e.key == " " || letterIndex == word.length) {
         // currently not counting spaces as wrong too (might cause issues)
+        if (e.key === " " && letterIndex == 0) {
+          // do nothing
+          e.preventDefault()
+          input.value = "";
+          return;
+        }
 
 
         // check if word is completed
@@ -141,7 +151,9 @@ input.addEventListener("keydown", (e)=>{
 
         inputted.push(" ")
 
-        const t = parseInt((((wordRight * 100)/word.length)/100));
+        // getting percentage of correctly typed word 
+        // example: Is with s being typed wrong would make t = .5
+        const t = (((wordRight * 100)/word.length)/100);
         console.log(t)
         rights += t;
         wordRight = 0;
@@ -157,9 +169,11 @@ input.addEventListener("keydown", (e)=>{
             const wrong = "<span class=wrong>" + word[letterIndex] + "</span>";
             inputted.push(wrong)
             wrongs+=1;
+            whereInQuote += 1;
         } else {
             inputted.push(e.key)
             wordRight += 1;
+            whereInQuote += 1;
         }
         displayIndex += 1;
         letterIndex += 1;

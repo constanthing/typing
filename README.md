@@ -9,6 +9,7 @@
 2. Press space
 - Speed is null when starting to type for ~1 second then back to normal
 ### TODO
+- Track accuracy
 - Calculate WPM
 - Location in quote indicator 
 - Prevent input after completed quote
@@ -17,3 +18,9 @@
 - Start tracking time when user types not before
 - Calculate speed even when not typing
 - BUG REPORT: show wrong and correct
+#### For Fun
+- Add scorestreaks
+- Add sound effects (i.e. when spacing on new word without typing, error, etc...)
+
+### Learned
+- e.preventDefault() stops letter from being placed 

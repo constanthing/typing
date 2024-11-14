@@ -97,11 +97,21 @@ input.addEventListener("keydown", (e)=>{
             displayIndex -= 1;
         }
     } else if (e.key == " " || letterIndex == word.length) {
-        // currently counting spaces as wrong too (might cause issues)
+        // currently not counting spaces as wrong too (might cause issues)
 
-        inputted.push(" ")
+
         // check if word is completed
         // if not red the letters that are wrong
+        if (letterIndex != word.length) {
+          while (letterIndex < word.length) {
+            const wrong = "<span class=wrong>" + word[letterIndex] + "</span>";
+            inputted.push(wrong)
+            letterIndex += 1;
+          }
+        }
+
+        inputted.push(" ")
+
         letterIndex = 0;
         wordIndex += 1;
         displayIndex += 1;

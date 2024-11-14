@@ -5,6 +5,5 @@
 2. On space, type a letter instead
 3. Error occurs but doesn't show
 ### TODO
-- When user presses space on check for incomplete letters
-
-
+- Calculate WPM
+- Location in quote indicator 

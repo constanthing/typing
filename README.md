@@ -7,3 +7,5 @@
 ### TODO
 - Calculate WPM
 - Location in quote indicator 
+- Prevent input after completed quote
+- BUG REPORT: show wrong and correct

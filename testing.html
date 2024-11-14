@@ -4,12 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+        @keyframes blink {
+            100% {
+                opacity: 100%;
+            }
+            50% {
+                opacity: 100%;
+            }
+            25% {
+                opacity: 100%;
+            }
+            20% {
+                opacity: 90%;
+            }
+            0% {
+                opacity: 0%;
+            }
+        }
+        #indicator {
+            width: 1px;
+            background: black;
+            animation-name: blink;
+            animation-duration: 1250ms;
+            animation-iteration-count: infinite;
+            animation-timing-function: step-end;
+            animation-play-state: running;
+        }
+
+        @keyframes something {
+            from {
+                border-left-color: rgba(0, 0, 0, 0%);
+            }
+            to {
+                border-left-color: rgba(0, 0, 0, 100%);
+            }
+        }
+        p {
+            font-size: 1.2em;
+        }
+        #ind {
+            border-left-color: rgba(0, 0, 0, 0%);
+            border-left-style: solid;
+            border-left-width: .18em;
+            /* animation-name: something; */
+            animation-duration: 1000ms;
+            animation-iteration-count: infinite;
+            animation-play-state: running;
+            animation-timing-function: steps(2, jump-none);
+        }
+    </style>
 </head>
 <body>
+
+    <p>Lorem <span id="indicator">k</span>ipsum dolor s<span id="ind">i</span>t, amet <span id="ind">j</span>onsectetur adipis<span id="ind">i</span>cing elit. Velit, culpa!</p>
     
     <input type="text">
 
     <script>
+
         const input = document.querySelector("input");
         let index = 0;
         input.addEventListener("keydown", (e)=>{

@@ -43,3 +43,11 @@ p {
      */
     white-space: pre-wrap;
 }
+
+
+#indicator {
+    animation: fadeInOut;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+}

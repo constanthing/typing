@@ -9,8 +9,6 @@
 2. Press space
 - Speed is null when starting to type for ~1 second then back to normal
 ### TODO
-- Track accuracy
-- Calculate WPM
 - Location in quote indicator 
 - Prevent input after completed quote
 - Stop calculating speed after completed quote
@@ -18,6 +16,10 @@
 - Start tracking time when user types not before
 - Calculate speed even when not typing
 - BUG REPORT: show wrong and correct
+- Prevent accuracy from going below 0%
+- Change calculation of accuracy its not right.
+- check why you have whereInQuote and displayIndex ??? aren't they the same thing?
+- Macro for loading a different quote
 #### For Fun
 - Add scorestreaks
 - Add sound effects (i.e. when spacing on new word without typing, error, etc...)

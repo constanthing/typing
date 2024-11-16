@@ -45,9 +45,41 @@ p {
 }
 
 
+
+@keyframes blink {
+    0% {
+        background: rgba(0, 0, 0, 100%);
+        color: white;
+    }
+    20% {
+        background: rgba(0, 0, 0, 100%);
+        color: white;
+    }
+    25% {
+        background: rgba(0, 0, 0, 100%);
+        color: white;
+    }
+    50% {
+        background: rgba(0, 0, 0, 90%);
+        color: white;
+    }
+    100% {
+        background: rgba(0, 0, 0, 0%);
+        color: black;
+    }
+}
 #indicator {
-    animation: fadeInOut;
-    animation-duration: 1000ms;
+    width: 1px;
+    background: rgba(0, 0, 0, 100%);
+    color: white;
+    animation-name: blink;
+    animation-duration: 1250ms;
     animation-iteration-count: infinite;
+    animation-timing-function: steps(1, start);
     animation-play-state: running;
+}
+
+
+.obscure {
+    opacity: 0;
 }

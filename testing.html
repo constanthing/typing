@@ -8,24 +8,30 @@
     <style>
         @keyframes blink {
             100% {
-                opacity: 100%;
+                background: rgba(0, 0, 0, 100%);
+                color: white;
             }
             50% {
-                opacity: 100%;
+                background: rgba(0, 0, 0, 100%);
+                color: white;
             }
             25% {
-                opacity: 100%;
+                background: rgba(0, 0, 0, 100%);
+                color: white;
             }
             20% {
-                opacity: 90%;
+                background: rgba(0, 0, 0, 90%);
+                color: white;
             }
             0% {
-                opacity: 0%;
+                background: rgba(0, 0, 0, 0%);
+                color: black;
             }
         }
         #indicator {
             width: 1px;
-            background: black;
+            background: rgba(0, 0, 0, 100%);
+            color: white;
             animation-name: blink;
             animation-duration: 1250ms;
             animation-iteration-count: infinite;

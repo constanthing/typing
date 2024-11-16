@@ -51,6 +51,7 @@ const rawSpeed = document.querySelector("#rawSpeed span");
 const accuracy = document.querySelector("#accuracy span");
 const time = document.querySelector("#time");
 const words = document.querySelector("#wordsCompleted span");
+const htmlMistakes = document.querySelector("#mistakes span");
 
 
 
@@ -72,6 +73,9 @@ for (let w of quote) {
         lettersOfQuote.push(l)
     }
 }
+// saving quote length
+const quoteLength = lettersOfQuote.length;
+
 
 // splitting quote into words
 quote = quote.split(" ")
@@ -81,6 +85,7 @@ quote = quote.split(" ")
 let userLetters = [];
 // Array.from() used otherwise userLetters would be linked via pointer to lettersOfQuote
 userLetters = Array.from(lettersOfQuote);
+
 
 // assigning hidden classes to all letters
 for (let i = 0; i < userLetters.length; i++) {
@@ -94,12 +99,16 @@ let wordIndex = 0;
 // tracks words done so far
 let wordsCompleted = 0;
 // tracks wrong letters
+let mistakes = 0;
+
 
 // create indicator
 function updateIndicator() {
   // check if obscured
-  const currentLetter = lettersOfQuote[letterIndex];
-  userLetters[letterIndex] = `<span id="indicator">${currentLetter}</span>`;
+  if (letterIndex != quoteLength) {
+    const currentLetter = lettersOfQuote[letterIndex];
+    userLetters[letterIndex] = `<span id="indicator">${currentLetter}</span>`;
+  }
 }
 function displayUserQuote() {
   userQuote.innerHTML = userLetters.join("")
@@ -110,6 +119,7 @@ displayUserQuote()
 
 function markLetterWrong() {
   userLetters[letterIndex] = `<span class="wrong">${lettersOfQuote[letterIndex]}</span>`;
+  mistakes += 1;
 }
 
 function clearInput(e) {
@@ -119,6 +129,7 @@ function clearInput(e) {
 
 function displayDebug() {
   words.innerText = wordsCompleted;
+  htmlMistakes.innerText = mistakes;
 }
 
 // pressed key
@@ -179,6 +190,11 @@ input.addEventListener("keydown", (e) => {
     wordIndex += 1;
     updateIndicator()
     displayUserQuote()
+
+    if (letterIndex == quoteLength) {
+      input.disabled = true;
+      clearInput(e)
+    }
 
     displayDebug()
   }

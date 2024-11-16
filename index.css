@@ -33,6 +33,7 @@ input {
 }
 
 #userInput .wrong {
+    border-bottom: solid 1px red;
     color: red;
 }
 

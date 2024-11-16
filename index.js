@@ -50,6 +50,7 @@ const speed = document.querySelector("#speed span");
 const rawSpeed = document.querySelector("#rawSpeed span");
 const accuracy = document.querySelector("#accuracy span");
 const time = document.querySelector("#time");
+const words = document.querySelector("#wordsCompleted span");
 
 
 
@@ -86,7 +87,13 @@ for (let i = 0; i < userLetters.length; i++) {
   userLetters[i] = `<span class="obscure">${userLetters[i]}</span>`;
 }
 
+// index track position in quote
 let letterIndex = 0; 
+// tracks position in word
+let wordIndex = 0;
+// tracks words done so far
+let wordsCompleted = 0;
+// tracks wrong letters
 
 // create indicator
 function updateIndicator() {
@@ -101,49 +108,83 @@ function displayUserQuote() {
 updateIndicator()
 displayUserQuote()
 
+function markLetterWrong() {
+  userLetters[letterIndex] = `<span class="wrong">${lettersOfQuote[letterIndex]}</span>`;
+}
 
+function clearInput(e) {
+    input.value = "";
+    e.preventDefault()
+}
+
+function displayDebug() {
+  words.innerText = wordsCompleted;
+}
 
 // pressed key
 input.addEventListener("keydown", (e) => {
   console.log(e.key)
+  const quoteLetter = lettersOfQuote[letterIndex];
+
   if (e.key == "Meta" || e.key == "Shift" || e.key == "Control" || e.key == "Tab" || e.key == "Alt" ||
     e.key == "ArrowUp" || e.key == "ArrowLeft" || e.key == "ArrowDown" || e.key == "ArrowRight") {
     return;
   }
   if (e.key == "Backspace") {
-    if (letterIndex >= 1) {
-      userLetters[letterIndex] = `<span class="obscure">${lettersOfQuote[letterIndex]}</span>`;
+    if (wordIndex > 0) {
+      if (letterIndex >= 1) {
+        userLetters[letterIndex] = `<span class="obscure">${quoteLetter}</span>`;
+      }
+      if (letterIndex > 0) {
+        letterIndex-=1;
+      }
+      wordIndex -= 1;
+      updateIndicator()
+      displayUserQuote()
     }
-    if (letterIndex > 0) {
-      letterIndex-=1;
-    }
-    updateIndicator()
-    displayUserQuote()
   } else {
-    console.log(e.key)
-    if (e.key == " ") {
+    if (e.key == " " || quoteLetter == " ") {
+      if (wordIndex != 0) {
+        // skip word but mark skipped letters as wrong
+        while (lettersOfQuote[letterIndex] != " ") {
+          console.log("running")
+          markLetterWrong()
+          letterIndex+=1;
+        }
+
+        // have to make -1 because later in the code wordIndex is +=1 
+        // thus when new word occurs it will be 0 instead of 1 (with wordIndex = 0)
+        wordIndex = -1;
+        wordsCompleted += 1;
+        clearInput(e)
+      } else {
+        // don't do anything
+        clearInput(e)
+        return;
+      }
     }
 
 
     // letter (, . etc too) pressed
     // check if current letter == user inputted letter
-    if (lettersOfQuote[letterIndex] == e.key) {
+    if (quoteLetter == e.key) {
       // is equal (right)
       // make letter right 
       userLetters[letterIndex] = e.key;
     } else {
       // is not equal (wrong)
-      userLetters[letterIndex] = `<span class="wrong">${lettersOfQuote[letterIndex]}</span>`;
+      markLetterWrong()
     }
     letterIndex += 1;
+    wordIndex += 1;
     updateIndicator()
     displayUserQuote()
+
+    displayDebug()
   }
-  console.log(letterIndex)
 })
 
 let displayIndex = 0;
-let wordIndex = 0;
 let word = quote[wordIndex];
 
 let whereInQuote = 0;

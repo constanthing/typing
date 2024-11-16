@@ -30,6 +30,7 @@ main {
 
 input {
     width: 100%;
+    /* pointer-events: none; <- disables the input */
 }
 
 #userInput .wrong {

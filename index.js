@@ -101,7 +101,6 @@ let wordsCompleted = 0;
 // tracks wrong letters
 let mistakes = 0;
 
-
 // create indicator
 function updateIndicator() {
   // check if obscured
@@ -132,24 +131,48 @@ function displayDebug() {
   htmlMistakes.innerText = mistakes;
 }
 
+function backspace(quoteLetter) {
+  if (letterIndex >= 1) {
+    // obscuring current letter in quote
+    // >= 1 because the first letter is NEVER obscured (indicator sits there)
+    userLetters[letterIndex] = `<span class="obscure">${quoteLetter}</span>`;
+  }
+
+  // preventing letterIndex from falling below 0 (negatives) 
+  if (letterIndex > 0) {
+    letterIndex-=1;
+  }
+
+  wordIndex -= 1;
+}
+
 // pressed key
 input.addEventListener("keydown", (e) => {
   console.log(e.key)
   const quoteLetter = lettersOfQuote[letterIndex];
 
-  if (e.key == "Meta" || e.key == "Shift" || e.key == "Control" || e.key == "Tab" || e.key == "Alt" ||
+  if (e.key == "Meta" || e.key == "Control" || e.key == "Shift" || e.key == "Tab" || e.key == "Alt" ||
     e.key == "ArrowUp" || e.key == "ArrowLeft" || e.key == "ArrowDown" || e.key == "ArrowRight") {
+    return; 
+  }
+
+  // ctrl + a = select all
+  if (e.metaKey && e.key == "a") {
     return;
   }
+
   if (e.key == "Backspace") {
+    // selectionis always left to right
     if (wordIndex > 0) {
-      if (letterIndex >= 1) {
-        userLetters[letterIndex] = `<span class="obscure">${quoteLetter}</span>`;
+      if (input.selectionStart == 0 && input.selectionEnd > 0 && input.selectionEnd == wordIndex) {
+        while (wordIndex > 0) {
+          backspace(quoteLetter)
+        }
+      } else {
+        // normal backspace
+        backspace(quoteLetter)
       }
-      if (letterIndex > 0) {
-        letterIndex-=1;
-      }
-      wordIndex -= 1;
+
       updateIndicator()
       displayUserQuote()
     }
@@ -200,20 +223,9 @@ input.addEventListener("keydown", (e) => {
   }
 })
 
-let displayIndex = 0;
-let word = quote[wordIndex];
-
-let whereInQuote = 0;
-// wrong letters
-let wrongs = 0;
-
-// right words
-let rights = 0;
-// right letters in the word
-let wordRight = 0;
-
-let startTime = null;
-
+input.addEventListener("select", ()=>{
+  console.log("selected")
+})
 
 // async function startCount() {
 //   while (true) {

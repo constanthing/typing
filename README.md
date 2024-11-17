@@ -6,9 +6,10 @@
 ### TODO
 - Max word skips to 3 or maybe 4? Prevents user from pressing a letter and space to skip the words for faster WPM.
 - Deal with ctrl+a -> random letter press... should it delete letters typed and insert pressed letter as first? idk! or should just continue off current letterIndex?
-- Stop calculating speed after completed quote
 - Prevent accuracy from going below 0%
 - Macro for loading a different quote
+- After finishing make sure to run calculateStatistics one last time just to make sure most recent updates??? or how will that work? maybe save finished time?
+- Add time limit
 #### For Fun
 - Add scorestreaks
 - Add sound effects (i.e. when spacing on new word without typing, error, etc...)

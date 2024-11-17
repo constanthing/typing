@@ -105,8 +105,12 @@ for (let i = 0; i < userLetters.length; i++) {
 let letterIndex = 0; 
 // tracks position in word
 let wordIndex = 0;
-// tracks words done so far
+// tracks words completed 
 let wordsCompleted = 0;
+// tracks raw words done so far (without adjustment to word mistakes)
+let rawWordsCompleted = 0;
+// tracks wordMistakes 
+let wordMistakes = 0;
 // tracks wrong letters
 let mistakes = 0;
 // tracks when user first pressed key 
@@ -132,6 +136,7 @@ displayUserQuote()
 function markLetterWrong() {
   userLetters[letterIndex] = `<span class="wrong">${lettersOfQuote[letterIndex]}</span>`;
   mistakes += 1;
+  wordMistakes += 1;
 }
 
 function clearInput(e) {
@@ -140,11 +145,15 @@ function clearInput(e) {
 }
 
 function displayDebug() {
-  words.innerText = wordsCompleted;
+  words.innerText = rawWordsCompleted;
   htmlMistakes.innerText = mistakes;
 }
 
 function backspace(quoteLetter) {
+  if (userLetters[letterIndex].includes("wrong")) {
+    wordMistakes -= 1;
+  }
+
   if (letterIndex >= 1) {
     // obscuring current letter in quote
     // >= 1 because the first letter is NEVER obscured (indicator sits there)
@@ -164,11 +173,20 @@ async function calculateStatistics() {
   // accuracy
   while (letterIndex < quoteLength) {
     const elapsedTime = parseInt((performance.now()-startTime)/1000);
+
     // displaying time with time elapsed since started typing
     time.innerText = elapsedTime;
+
     htmlMistakes.innerText = mistakes;
-    accuracy.innerText = parseInt(((attemptedLetters - mistakes) * 100) / attemptedLetters);
-    rawSpeed.innerText = parseInt(wordsCompleted / (elapsedTime/60));
+
+    // storing accuracy to determine whether its below 0 
+    let tempAccuracy = parseInt(((attemptedLetters - mistakes) * 100) / attemptedLetters);
+    // if below 0 make accuracy 0 instead of the negative number
+    tempAccuracy = tempAccuracy >= 0 ? tempAccuracy : 0;
+    accuracy.innerText = tempAccuracy;
+
+    speed.innerText = parseInt(wordsCompleted / (elapsedTime / 60))
+    rawSpeed.innerText = parseInt(rawWordsCompleted / (elapsedTime/60));
 
     await new Promise((resolve, reject) => {
       setTimeout(()=>{resolve()}, 1000)
@@ -220,15 +238,16 @@ input.addEventListener("keydown", (e) => {
       if (wordIndex != 0) {
         // skip word but mark skipped letters as wrong
         while (lettersOfQuote[letterIndex] != " ") {
-          console.log("running")
           markLetterWrong()
           letterIndex+=1;
         }
 
+        wordsCompleted += ((((wordIndex - wordMistakes) * 100) / wordIndex)/100);
         // have to make -1 because later in the code wordIndex is +=1 
         // thus when new word occurs it will be 0 instead of 1 (with wordIndex = 0)
         wordIndex = -1;
-        wordsCompleted += 1;
+        rawWordsCompleted += 1;
+        wordMistakes = 0;
         clearInput(e)
       } else {
         // don't do anything

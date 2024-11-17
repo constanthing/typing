@@ -136,7 +136,11 @@ displayUserQuote()
 function markLetterWrong() {
   userLetters[letterIndex] = `<span class="wrong">${lettersOfQuote[letterIndex]}</span>`;
   mistakes += 1;
-  wordMistakes += 1;
+
+  // not counting spaces as part of word 
+  if (lettersOfQuote[letterIndex] != " ") {
+    wordMistakes += 1;
+  }
 }
 
 function clearInput(e) {
@@ -185,11 +189,11 @@ async function calculateStatistics() {
     tempAccuracy = tempAccuracy >= 0 ? tempAccuracy : 0;
     accuracy.innerText = tempAccuracy;
 
-    speed.innerText = parseInt(wordsCompleted / (elapsedTime / 60))
+    speed.innerText = parseInt(wordsCompleted / (elapsedTime / 60));
     rawSpeed.innerText = parseInt(rawWordsCompleted / (elapsedTime/60));
 
     await new Promise((resolve, reject) => {
-      setTimeout(()=>{resolve()}, 1000)
+      setTimeout(()=>{resolve()}, 1)
     })
   }
 }
@@ -239,6 +243,7 @@ input.addEventListener("keydown", (e) => {
         // skip word but mark skipped letters as wrong
         while (lettersOfQuote[letterIndex] != " ") {
           markLetterWrong()
+          wordIndex += 1;
           letterIndex+=1;
         }
 

@@ -49,7 +49,7 @@ const debug = document.querySelector("#debug");
 const speed = document.querySelector("#speed span");
 const rawSpeed = document.querySelector("#rawSpeed span");
 const accuracy = document.querySelector("#accuracy span");
-const time = document.querySelector("#time");
+const time = document.querySelector("#time span");
 const words = document.querySelector("#wordsCompleted span");
 const htmlMistakes = document.querySelector("#mistakes span");
 
@@ -73,8 +73,17 @@ for (let w of quote) {
         lettersOfQuote.push(l)
     }
 }
+
+// pushing space at the end to deal with
+// users skipping the last word not 
+// working properly without significant modification to base code
+// with space don't have to change anything but -1 in if statement 
+// at the end of the input "click" event function
+lettersOfQuote.push(" ")
+
 // saving quote length
-const quoteLength = lettersOfQuote.length;
+// we don't want to count the manually added " " 
+const quoteLength = lettersOfQuote.length-1;
 
 
 // splitting quote into words
@@ -100,11 +109,15 @@ let wordIndex = 0;
 let wordsCompleted = 0;
 // tracks wrong letters
 let mistakes = 0;
+// tracks when user first pressed key 
+let startTime = null;
+// tracks attempted letters
+let attemptedLetters = 0;
 
 // create indicator
 function updateIndicator() {
   // check if obscured
-  if (letterIndex != quoteLength) {
+  if (letterIndex < quoteLength) {
     const currentLetter = lettersOfQuote[letterIndex];
     userLetters[letterIndex] = `<span id="indicator">${currentLetter}</span>`;
   }
@@ -146,12 +159,36 @@ function backspace(quoteLetter) {
   wordIndex -= 1;
 }
 
+async function calculateStatistics() {
+  // wpm (raw, adjusted)
+  // accuracy
+  while (letterIndex < quoteLength) {
+    const elapsedTime = parseInt((performance.now()-startTime)/1000);
+    // displaying time with time elapsed since started typing
+    time.innerText = elapsedTime;
+    htmlMistakes.innerText = mistakes;
+    accuracy.innerText = parseInt(((attemptedLetters - mistakes) * 100) / attemptedLetters);
+    rawSpeed.innerText = parseInt(wordsCompleted / (elapsedTime/60));
+
+    await new Promise((resolve, reject) => {
+      setTimeout(()=>{resolve()}, 1000)
+    })
+  }
+}
+
+
 // pressed key
 input.addEventListener("keydown", (e) => {
+
+  if (startTime == null) {
+    startTime = performance.now();
+    calculateStatistics()
+  }
+
   console.log(e.key)
   const quoteLetter = lettersOfQuote[letterIndex];
 
-  if (e.key == "Meta" || e.key == "Control" || e.key == "Shift" || e.key == "Tab" || e.key == "Alt" ||
+  if (e.key == "Escape" || e.key == "Meta" || e.key == "Control" || e.key == "Shift" || e.key == "Tab" || e.key == "Alt" ||
     e.key == "ArrowUp" || e.key == "ArrowLeft" || e.key == "ArrowDown" || e.key == "ArrowRight") {
     return; 
   }
@@ -165,6 +202,7 @@ input.addEventListener("keydown", (e) => {
     // selectionis always left to right
     if (wordIndex > 0) {
       if (input.selectionStart == 0 && input.selectionEnd > 0 && input.selectionEnd == wordIndex) {
+        // obscuring every letter of the current word typed
         while (wordIndex > 0) {
           backspace(quoteLetter)
         }
@@ -177,6 +215,7 @@ input.addEventListener("keydown", (e) => {
       displayUserQuote()
     }
   } else {
+    attemptedLetters += 1;
     if (e.key == " " || quoteLetter == " ") {
       if (wordIndex != 0) {
         // skip word but mark skipped letters as wrong
@@ -214,7 +253,8 @@ input.addEventListener("keydown", (e) => {
     updateIndicator()
     displayUserQuote()
 
-    if (letterIndex == quoteLength) {
+    // -1 to adjust for explicit space added at end of quote 
+    if (letterIndex >= quoteLength) {
       input.disabled = true;
       clearInput(e)
     }
@@ -222,11 +262,6 @@ input.addEventListener("keydown", (e) => {
     displayDebug()
   }
 })
-
-input.addEventListener("select", ()=>{
-  console.log("selected")
-})
-
 // async function startCount() {
 //   while (true) {
 //     const elapsedTime = (performance.now() - startTime) / 1000;
@@ -243,126 +278,6 @@ input.addEventListener("select", ()=>{
 //     })
 //   }
 // }
-
-// function updateIndicator(amount=0) {
-//   if (letterIndex >= 1) {
-//     // remove previous 
-//     console.log("removed")
-//     userLetters.splice(displayIndex + amount - 1, 1)
-//   }
-//   if (letterIndex == 0) {
-//     userLetters.splice(displayIndex, 1)
-//   }
-//   if (letterIndex < word.length) {
-//     userLetters.push(`<span id="indicator">${word[letterIndex]}</span>`)
-//   }
-// }
-
-// userQuote.innerHTML = userLetters.join("")
-
-
-
-// input.addEventListener("keydown", (e)=>{
-//   if (startTime == null) {
-//     startTime = performance.now();
-//     startCount()
-//   }
-//     // e.code ignores keyboard layout which can lead to issues
-//     // e.key is better
-
-//     if (e.key == "Shift" || e.key == "Meta") {
-//         // do nothing
-//     } else if (e.key == "Backspace") {
-//         // do not want to let user to backspace into previous word
-//         // keeps them in the same word
-//         if (letterIndex != 0) {
-//             userLetters.pop()
-//             letterIndex -= 1;
-//             displayIndex -= 1;
-//             whereInQuote -= 1;
-//             updateIndicator(1)
-//         }
-//     } else if (e.key == " " || letterIndex == word.length) {
-//         // currently not counting spaces as wrong too (might cause issues)
-
-
-//         // preventing user from spacing if on first letter of word 
-//         if (e.key === " " && letterIndex == 0) {
-//           // do nothing
-//           e.preventDefault()
-//           input.value = "";
-//           return;
-//         }
-
-
-//         // check if word is completed
-//         // if not red the letters that are wrong
-//         if (letterIndex != word.length) {
-//           while (letterIndex < word.length) {
-//             const wrong = "<span class=wrong>" + word[letterIndex] + "</span>";
-//             userLetters.push(wrong)
-//             letterIndex += 1;
-//             wrongs+=1;
-//           }
-//         }
-
-//         userLetters.push(" ")
-
-//         // getting percentage of correctly typed word 
-//         // example: Is with s being typed wrong would make t = .5
-//         const t = (((wordRight * 100)/word.length)/100);
-//         console.log(t)
-//         rights += t;
-//         wordRight = 0;
-//         letterIndex = 0;
-//         wordIndex += 1;
-//         displayIndex += 1;
-//         word = quote[wordIndex]
-//         e.preventDefault()
-//         input.value = "";
-
-//         updateIndicator()
-
-//         if (wordIndex == quote.length) {
-//           input.disabled = true;
-//         }
-//     } else {
-//         if (e.key != word[letterIndex]) {
-//             // don't display the inputted
-//             const wrong = "<span class=wrong>" + word[letterIndex] + "</span>";
-//             userLetters.push(wrong)
-//             wrongs+=1;
-//             whereInQuote += 1;
-//         } else {
-//             // inputted.push(e.key)
-//             userLetters.push(e.key)
-//             wordRight += 1;
-//             whereInQuote += 1;
-//         }
-
-//         if (letterIndex == word.length-1) {
-//           if (wordIndex == quote.length-1) {
-//             input.disabled = true;
-//           }
-//         }
-
-//         displayIndex += 1;
-//         letterIndex += 1;
-//         updateIndicator();
-//     }
-
-//     debug.innerText = `
-//     Letter index: ${letterIndex} \n
-//     Word: ${word} \n
-//     Display index: ${displayIndex} \n
-//     Display letter: ${lettersOfQuote[displayIndex]} \n
-//     Wrongs: ${wrongs} \n
-//     Rights: ${rights} \n
-//     `;
-
-//     userQuote.innerHTML = userLetters.join("")
-// })
-
 
 
 // on load focus on input

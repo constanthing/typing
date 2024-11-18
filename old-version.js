@@ -1,3 +1,20 @@
+// async function startCount() {
+//   while (true) {
+//     const elapsedTime = (performance.now() - startTime) / 1000;
+//     rawSpeed.innerText = parseInt(wordIndex / (elapsedTime/60));
+//     speed.innerText = parseInt(rights / (elapsedTime/60));
+//     time.innerText = parseInt((performance.now() - startTime) / 1000);
+//     // accuracy calculated using how many wrongs we got from the letters (space not taken into calculation)
+//     accuracy.innerText = parseInt((((whereInQuote - wrongs) * 100))/whereInQuote)
+//     // accuracy.innerText = parseInt((rights * 100) / quote.length) + "%";
+//     await new Promise((resolve, reject) => {
+//       setTimeout(()=>{
+//         resolve()
+//       }, 1000)
+//     })
+//   }
+// }
+
 
 // function updateIndicator(amount=0) {
 //   if (letterIndex >= 1) {

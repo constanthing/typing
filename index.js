@@ -172,11 +172,19 @@ function backspace(quoteLetter) {
   wordIndex -= 1;
 }
 
+function calculateElapsedTime() {
+  return parseInt((performance.now()-startTime)/1000);
+}
+
 async function calculateStatistics() {
   // wpm (raw, adjusted)
   // accuracy
-  while (letterIndex < quoteLength) {
-    const elapsedTime = parseInt((performance.now()-startTime)/1000);
+  let elapsedTime = calculateElapsedTime();
+  while (elapsedTime <= 120) {
+    
+    if (letterIndex >= quoteLength) {
+      break;
+    }
 
     // displaying time with time elapsed since started typing
     time.innerText = elapsedTime;
@@ -185,6 +193,7 @@ async function calculateStatistics() {
 
     // storing accuracy to determine whether its below 0 
     let tempAccuracy = parseInt(((attemptedLetters - mistakes) * 100) / attemptedLetters);
+    console.log(tempAccuracy)
     // if below 0 make accuracy 0 instead of the negative number
     tempAccuracy = tempAccuracy >= 0 ? tempAccuracy : 0;
     accuracy.innerText = tempAccuracy;
@@ -193,9 +202,27 @@ async function calculateStatistics() {
     rawSpeed.innerText = parseInt(rawWordsCompleted / (elapsedTime/60));
 
     await new Promise((resolve, reject) => {
-      setTimeout(()=>{resolve()}, 1)
+      setTimeout(()=>{resolve()}, 100)
     })
+    elapsedTime = calculateElapsedTime();
   }
+
+
+  // if user did not finish the quote
+  // disable input
+  // clear input
+  // remove indicator manually
+  // update user quote to show removed indicator 
+  if (letterIndex < lettersOfQuote.length - 1) {
+    console.log("TRUE")
+    input.disabled = true;
+    input.value = "";
+    // remove indicator 
+    userLetters[letterIndex] = lettersOfQuote[letterIndex];
+    displayUserQuote()
+  }
+
+  alert("done")
 }
 
 
@@ -245,6 +272,7 @@ input.addEventListener("keydown", (e) => {
           markLetterWrong()
           wordIndex += 1;
           letterIndex+=1;
+          attemptedLetters += 1;
         }
 
         wordsCompleted += ((((wordIndex - wordMistakes) * 100) / wordIndex)/100);
@@ -286,22 +314,6 @@ input.addEventListener("keydown", (e) => {
     displayDebug()
   }
 })
-// async function startCount() {
-//   while (true) {
-//     const elapsedTime = (performance.now() - startTime) / 1000;
-//     rawSpeed.innerText = parseInt(wordIndex / (elapsedTime/60));
-//     speed.innerText = parseInt(rights / (elapsedTime/60));
-//     time.innerText = parseInt((performance.now() - startTime) / 1000);
-//     // accuracy calculated using how many wrongs we got from the letters (space not taken into calculation)
-//     accuracy.innerText = parseInt((((whereInQuote - wrongs) * 100))/whereInQuote)
-//     // accuracy.innerText = parseInt((rights * 100) / quote.length) + "%";
-//     await new Promise((resolve, reject) => {
-//       setTimeout(()=>{
-//         resolve()
-//       }, 1000)
-//     })
-//   }
-// }
 
 
 // on load focus on input

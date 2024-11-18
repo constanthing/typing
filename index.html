@@ -5,26 +5,32 @@
         <link rel="stylesheet" href="index.css"/>
     </head>
     <body>
-        <p id="debug"></p>
-        <p id="time">Time: <span>0</span>s</p>
-        <p id="wordsCompleted">Words: <span></span></p>
-        <p id="mistakes">Mistakes: <span></span></p>
-        <p id="speed">WPM: <span></span></p>
-        <p id="rawSpeed">Raw WPM: <span></span></p>
-        <p id="accuracy">Accuracy: <span></span>%</p>
-
 
         <main>
-            <div id="typingDisplay">
-                <div id="quote">
-                    <p>NO QUOTE</p>
+            <div id="statistics">
+                <div>
+                    <p id="time">Time: <span>0</span>s</p>
+                    <p id="wordsCompleted">Words: <span></span></p>
+                    <p id="mistakes">Mistakes: <span></span></p>
                 </div>
-                <div id="userInput">
-                    <p></p>
+                <div>
+                    <p id="speed">WPM: <span></span></p>
+                    <p id="rawSpeed">Raw WPM: <span></span></p>
+                    <p id="accuracy">Accuracy: <span></span>%</p>
                 </div>
             </div>
 
-            <input type="text" focus/>
+
+            <div id="typing">
+                <div id="typingDisplay">
+                    <div id="userInput">
+                        <p></p>
+                    </div>
+                </div>
+
+                <input type="text" focus/>
+            </div>
+
 
         </main>
 

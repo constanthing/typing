@@ -14,17 +14,25 @@ main {
 #typingDisplay {
     position: relative;
 }
-#quote p {
-    opacity: 50%;
+#typingDisplay p {
+    font-size: 1.2em;
+    /* 
+    In JS adding " " to the (p) element does not appear.
+    pre-wrap preserves whitespace so " " does appear.
+     */
+    white-space: pre-wrap;
 }
-#userInput {
+
+
+#statistics {
     position: absolute;
-    top: 0;
-    left: 0;
+    bottom: 100%;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
-#userInput p {
-    margin: 0 auto;
-    /* text wrapping error  */
+#statistics div {
+
 }
 
 
@@ -37,15 +45,6 @@ input {
     border-bottom: solid 1px red;
     color: red;
 }
-
-p {
-    /* 
-    In JS adding " " to the (p) element does not appear.
-    pre-wrap preserves whitespace so " " does appear.
-     */
-    white-space: pre-wrap;
-}
-
 
 
 @keyframes blink {
@@ -83,5 +82,5 @@ p {
 
 
 .obscure {
-    opacity: 0;
+    opacity: 50%;
 }

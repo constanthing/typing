@@ -42,13 +42,12 @@ const quotes = [
 ];
 
 // ELEMENTS
-const htmlQuote = document.querySelector("#quote p");
 const userQuote = document.querySelector("#userInput p");
 const input = document.querySelector("input");
 const debug = document.querySelector("#debug");
-const speed = document.querySelector("#speed span");
-const rawSpeed = document.querySelector("#rawSpeed span");
-const accuracy = document.querySelector("#accuracy span");
+const htmlSpeed = document.querySelector("#speed span");
+const htmlRawSpeed = document.querySelector("#rawSpeed span");
+const htmlAccuracy = document.querySelector("#accuracy span");
 const time = document.querySelector("#time span");
 const words = document.querySelector("#wordsCompleted span");
 const htmlMistakes = document.querySelector("#mistakes span");
@@ -60,8 +59,6 @@ let quote = quotes[parseInt(Math.random() * quotes.length-1)];
 // extracting author from quote
 const author = quote["author"];
 
-// setting html quote to randomly selected quote
-htmlQuote.innerText = quote['quote'];
 
 // splitting quote into words
 quote = quote['quote']
@@ -82,7 +79,7 @@ for (let w of quote) {
 lettersOfQuote.push(" ")
 
 // saving quote length
-// we don't want to count the manually added " " 
+// we don't want to count the manually added " " (so -1)
 const quoteLength = lettersOfQuote.length-1;
 
 
@@ -117,6 +114,9 @@ let mistakes = 0;
 let startTime = null;
 // tracks attempted letters
 let attemptedLetters = 0;
+let speed = 0;
+let rawSpeed = 0;
+let accuracy = 0;
 
 // create indicator
 function updateIndicator() {
@@ -176,37 +176,41 @@ function calculateElapsedTime() {
   return parseInt((performance.now()-startTime)/1000);
 }
 
-async function calculateStatistics() {
+function calculateStatistics(elapsedTime) {
+    accuracy = parseInt(((attemptedLetters - mistakes) * 100) / attemptedLetters);
+    speed = parseInt(wordsCompleted / (elapsedTime / 60));
+    rawSpeed = parseInt(rawWordsCompleted / (elapsedTime/60));
+}
+
+async function displayStatistics() {
+  console.log("displayStatistics() called")
   // wpm (raw, adjusted)
   // accuracy
   let elapsedTime = calculateElapsedTime();
-  while (elapsedTime <= 120) {
-    
-    if (letterIndex >= quoteLength) {
-      break;
-    }
 
+  do {
     // displaying time with time elapsed since started typing
     time.innerText = elapsedTime;
 
     htmlMistakes.innerText = mistakes;
 
-    // storing accuracy to determine whether its below 0 
-    let tempAccuracy = parseInt(((attemptedLetters - mistakes) * 100) / attemptedLetters);
-    console.log(tempAccuracy)
-    // if below 0 make accuracy 0 instead of the negative number
-    tempAccuracy = tempAccuracy >= 0 ? tempAccuracy : 0;
-    accuracy.innerText = tempAccuracy;
+    calculateStatistics(elapsedTime)
 
-    speed.innerText = parseInt(wordsCompleted / (elapsedTime / 60));
-    rawSpeed.innerText = parseInt(rawWordsCompleted / (elapsedTime/60));
+    htmlSpeed.innerText = speed;
+    htmlRawSpeed.innerText = rawSpeed;
+    htmlAccuracy.innerText = accuracy;
 
     await new Promise((resolve, reject) => {
       setTimeout(()=>{resolve()}, 100)
     })
-    elapsedTime = calculateElapsedTime();
-  }
 
+    if (letterIndex >= quoteLength) {
+      break;
+    }
+
+    elapsedTime = calculateElapsedTime();
+  } while (elapsedTime <= 120);
+  // 120 = time limit
 
   // if user did not finish the quote
   // disable input
@@ -214,7 +218,9 @@ async function calculateStatistics() {
   // remove indicator manually
   // update user quote to show removed indicator 
   if (letterIndex < lettersOfQuote.length - 1) {
-    console.log("TRUE")
+    // setting letterIndex as if user finished quote
+    letterIndex = lettersOfQuote.length;
+
     input.disabled = true;
     input.value = "";
     // remove indicator 
@@ -222,7 +228,7 @@ async function calculateStatistics() {
     displayUserQuote()
   }
 
-  alert("done")
+  console.log("Finished")
 }
 
 
@@ -231,7 +237,7 @@ input.addEventListener("keydown", (e) => {
 
   if (startTime == null) {
     startTime = performance.now();
-    calculateStatistics()
+    displayStatistics()
   }
 
   console.log(e.key)
@@ -305,8 +311,11 @@ input.addEventListener("keydown", (e) => {
     updateIndicator()
     displayUserQuote()
 
-    // -1 to adjust for explicit space added at end of quote 
+
+    // finished quote
     if (letterIndex >= quoteLength) {
+      // run statistics one last time
+      displayStatistics()
       input.disabled = true;
       clearInput(e)
     }

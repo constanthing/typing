@@ -1,0 +1,35 @@
+<!doctype html>
+
+<html>
+<head>
+</head>
+<body>
+
+<input/>
+
+<script>
+let input = document.querySelector("input");
+
+let firstListener;
+
+async function doSomething() {
+	console.log("doing somethign")
+	input.removeEventListener("click", clicked)
+}
+
+function clicked() {
+	console.log("first key press")
+	doSomething()
+}
+
+
+input.addEventListener("click", clicked);
+
+const secondListener = input.addEventListener("click", ()=>{
+	console.log("second one")
+});
+
+
+</script>
+</body>
+</html>

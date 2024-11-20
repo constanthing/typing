@@ -4,9 +4,10 @@
 - Skipping last word doesn't remove indicator (stays at letter where skipped) 
 = doesn't clear input either
 ### TODO
-- Deal with ctrl+a -> random letter press... should it delete letters typed and insert pressed letter as first? idk! or should just continue off current letterIndex?
-- Prevent accuracy from going below 0%
-- Macro for loading a different quote
+- Prevent any key from starting quote sequence... (exmaple I can press alt and it starts)
+- Add history
+- Different type of quote categories
+- Cache system to save history
 #### For Fun
 - Add scorestreaks
 - Add sound effects (i.e. when spacing on new word without typing, error, etc...)

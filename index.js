@@ -1,48 +1,243 @@
+class State {
+  static ui = null;
+  static quote = null;
+  static time = null;
+  static statistics = null;
+  static input = null;
+  static indicator = null;
+
+  constructor() {
+    State.start()
+  }
+
+  static start() {
+    State.input.fillUserLetters()
+    State.indicator.move()
+    State.ui.displayQuote()
+
+    State.input.start()
+  }
+
+  static new() {
+    State.indicator.remove()
+    State.time.restart()
+    State.input.restart()
+    State.statistics.restart()
+    State.time.restart()
+    State.ui.restart()
+
+    State.quote.new()
+    State.start()
+  }
+}
+
+
 class Quote {
   static quotes = [
     {
-      "quote": "In the end, it's not the years in your life that count, it's the life in your years. Life is what you make of it, and the most important thing is to make the most of the time you have and live each day as fully as possible.",
-      "author": "Abraham Lincoln"
-    },
-    {
-      "quote": "You will face many defeats in life, but never let yourself be defeated. It may not be easy, but the challenges you face are what make you stronger and more capable of overcoming future obstacles. The key is persistence and believing in your own potential.",
-      "author": "Maya Angelou"
-    },
-    {
-      "quote": "Success is not how high you have climbed, but how you make a positive difference to the world. It is the impact you have on others and the legacy you leave behind that defines success, not the material possessions or accolades you collect along the way.",
-      "author": "Roy T. Bennett"
-    },
-    {
-      "quote": "The only way to do great work is to love what you do. If you haven’t found it yet, keep looking. Don’t settle. As with all matters of the heart, you’ll know when you find it. And when you do, your work will become more than just a job — it will become a passion.",
+      "quote": "The only way to do great work is to love what you do.",
       "author": "Steve Jobs"
     },
     {
-      "quote": "Don't judge each day by the harvest you reap, but by the seeds that you plant. Even when the results of your hard work aren't immediately apparent, remember that every step forward is progress, and every act of kindness or hard work adds to your future success.",
-      "author": "Robert Louis Stevenson"
-    },
-    {
-      "quote": "The most difficult thing is the decision to act, the rest is merely tenacity. When you have a goal or a dream, the hardest part is committing to it, and once you do, everything else becomes easier. It’s persistence and courage that will ultimately lead you to success.",
-      "author": "Amelia Earhart"
-    },
-    {
-      "quote": "Life is not measured by the number of breaths we take, but by the moments that take our breath away. It’s not about living as long as possible, but about filling your life with experiences that make it meaningful. Focus on creating memories, not just surviving each day.",
-      "author": "George Carlin"
-    },
-    {
-      "quote": "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. The pursuit of happiness should be the ultimate goal, and when you are happy, success will naturally follow as a result of your positive energy and attitude.",
+      "quote": "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful.",
       "author": "Albert Schweitzer"
     },
     {
-      "quote": "It does not matter how slowly you go as long as you do not stop. Every step you take, no matter how small, brings you closer to your goal. Consistency and determination will get you there, no matter how long it takes or how difficult the path may seem.",
+      "quote": "Your time is limited, so don't waste it living someone else's life.",
+      "author": "Steve Jobs"
+    },
+    {
+      "quote": "Believe you can and you're halfway there.",
+      "author": "Theodore Roosevelt"
+    },
+    {
+      "quote": "Don't watch the clock; do what it does. Keep going.",
+      "author": "Sam Levenson"
+    },
+    {
+      "quote": "The future belongs to those who believe in the beauty of their dreams.",
+      "author": "Eleanor Roosevelt"
+    },
+    {
+      "quote": "It does not matter how slowly you go as long as you do not stop.",
       "author": "Confucius"
     },
     {
-      "quote": "In three words I can sum up everything I’ve learned about life: it goes on. Life is full of ups and downs, but the one thing that is certain is that it moves forward. No matter what happens, time doesn’t stop, and neither should you. Keep going, even when things get tough.",
-      "author": "Robert Frost"
+      "quote": "Hardships often prepare ordinary people for an extraordinary destiny.",
+      "author": "C.S. Lewis"
+    },
+    {
+      "quote": "You are never too old to set another goal or to dream a new dream.",
+      "author": "C.S. Lewis"
+    },
+    {
+      "quote": "What lies behind us and what lies before us are tiny matters compared to what lies within us.",
+      "author": "Ralph Waldo Emerson"
+    },
+    {
+      "quote": "Happiness is not something ready made. It comes from your own actions.",
+      "author": "Dalai Lama"
+    },
+    {
+      "quote": "Start where you are. Use what you have. Do what you can.",
+      "author": "Arthur Ashe"
+    },
+    {
+      "quote": "I have not failed. I've just found 10,000 ways that won't work.",
+      "author": "Thomas A. Edison"
+    },
+    {
+      "quote": "It always seems impossible until it's done.",
+      "author": "Nelson Mandela"
+    },
+    {
+      "quote": "The best way to predict the future is to create it.",
+      "author": "Peter Drucker"
+    },
+    {
+      "quote": "Act as if what you do makes a difference. It does.",
+      "author": "William James"
+    },
+    {
+      "quote": "Success is walking from failure to failure with no loss of enthusiasm.",
+      "author": "Winston Churchill"
+    },
+    {
+      "quote": "Courage is resistance to fear, mastery of fear—not absence of fear.",
+      "author": "Mark Twain"
+    },
+    {
+      "quote": "Dream big and dare to fail.",
+      "author": "Norman Vaughan"
+    },
+    {
+      "quote": "Don't let the fear of losing be greater than the excitement of winning.",
+      "author": "Robert Kiyosaki"
+    },
+    {
+      "quote": "You miss 100% of the shots you don't take.",
+      "author": "Wayne Gretzky"
+    },
+    {
+      "quote": "The only limit to our realization of tomorrow will be our doubts of today.",
+      "author": "Franklin D. Roosevelt"
+    },
+    {
+      "quote": "Do what you can, with what you have, where you are.",
+      "author": "Theodore Roosevelt"
+    },
+    {
+      "quote": "If you're going through hell, keep going.",
+      "author": "Winston Churchill"
+    },
+    {
+      "quote": "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart.",
+      "author": "Roy T. Bennett"
+    },
+    {
+      "quote": "Great things never came from comfort zones.",
+      "author": "Anonymous"
+    },
+    {
+      "quote": "Opportunities don't happen. You create them.",
+      "author": "Chris Grosser"
+    },
+    {
+      "quote": "If you want something you've never had, you must be willing to do something you've never done.",
+      "author": "Thomas Jefferson"
+    },
+    {
+      "quote": "The secret of getting ahead is getting started.",
+      "author": "Mark Twain"
+    },
+    {
+      "quote": "The best revenge is massive success.",
+      "author": "Frank Sinatra"
+    },
+    {
+      "quote": "Success usually comes to those who are too busy to be looking for it.",
+      "author": "Henry David Thoreau"
+    },
+    {
+      "quote": "Don't wait for opportunity. Create it.",
+      "author": "George Bernard Shaw"
+    },
+    {
+      "quote": "Success doesn't just find you. You have to go out and get it.",
+      "author": "Anonymous"
+    },
+    {
+      "quote": "The way to get started is to quit talking and begin doing.",
+      "author": "Walt Disney"
+    },
+    {
+      "quote": "Don't be afraid to give up the good to go for the great.",
+      "author": "John D. Rockefeller"
+    },
+    {
+      "quote": "The only place where success comes before work is in the dictionary.",
+      "author": "Vidal Sassoon"
+    },
+    {
+      "quote": "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle.",
+      "author": "Christian D. Larson"
+    },
+    {
+      "quote": "Push yourself, because no one else is going to do it for you.",
+      "author": "Anonymous"
+    },
+    {
+      "quote": "Don't limit your challenges. Challenge your limits.",
+      "author": "Anonymous"
+    },
+    {
+      "quote": "Success doesn't come from what you do occasionally, it comes from what you do consistently.",
+      "author": "Marie Forleo"
+    },
+    {
+      "quote": "If you can dream it, you can achieve it.",
+      "author": "Zig Ziglar"
+    },
+    {
+      "quote": "What you get by achieving your goals is not as important as what you become by achieving your goals.",
+      "author": "Zig Ziglar"
+    },
+    {
+      "quote": "Don't count the days, make the days count.",
+      "author": "Muhammad Ali"
+    },
+    {
+      "quote": "You may have to fight a battle more than once to win it.",
+      "author": "Margaret Thatcher"
+    },
+    {
+      "quote": "Perseverance is not a long race; it is many short races one after the other.",
+      "author": "Walter Elliot"
+    },
+    {
+      "quote": "Do something today that your future self will thank you for.",
+      "author": "Sean Patrick Flanery"
+    },
+    {
+      "quote": "We may encounter many defeats but we must not be defeated.",
+      "author": "Maya Angelou"
+    },
+    {
+      "quote": "Go as far as you can see; when you get there, you'll be able to see further.",
+      "author": "Thomas Carlyle"
+    },
+    {
+      "quote": "The harder you work for something, the greater you'll feel when you achieve it.",
+      "author": "Anonymous"
+    },
+    {
+      "quote": "The only person you are destined to become is the person you decide to be.",
+      "author": "Ralph Waldo Emerson"
     }
   ];
 
   constructor() {
+    State.quote = this;
     // index used to get random quote
     this.index = null;
     this.author = null;
@@ -100,38 +295,33 @@ class Quote {
   }
 }
 
-
 class Indicator {
-  constructor(quote, input) {
-    this.input = input;
-    this.quote = quote;
+  constructor() {
+    State.indicator = this;
   }
 
   #getFormat(index) {
-    return `<span id="indicator">${this.quote.letters[index]}</span>`;
+    return `<span id="indicator">${State.quote.letters[index]}</span>`;
   }
 
   // depending on the situation might just create a forward() and backward() and return the modified index
   // forward() returns index + 1 
   move() {
-    const index = this.input.index;
-    if (index < this.quote.length) {
-      this.input.letters[index] = this.#getFormat(index);
+    const index = State.input.index;
+    if (index <= State.quote.length) {
+      State.input.letters[index] = this.#getFormat(index);
     }
   }
 
   // remove indicator 
   remove() {
-    this.input.letters[this.input.index] = this.quote.letters[this.input.index];
+    State.input.letters[State.input.index] = State.quote.letters[State.input.index];
   }
 }
 
 class UI {
   constructor() {
-    this.time = null;
-    this.input = null;
-    this.quote = null;
-    this.statistics = null;
+    State.ui = this;
 
     // E = element
     this.Etime = UI.find("#time span");
@@ -146,17 +336,76 @@ class UI {
     this.Equote = UI.find("#userInput p");
     this.Einput = UI.find("input");
 
-    // this.trackInput()
+    this.EnewQuote = UI.find("#newQuote");
+    this.listenNewQuote()
+
+    this.Ehistory = UI.find("#history ul");
+
+    this.abortController = new AbortController();
+    this.signal = this.abortController.signal;
+
+    this.windowListener()
+    this.loadHistory()
   }
 
-  relationships(time, input, quote, statistics) {
-    this.time = time;
-    this.input = input;
-    this.quote = quote;
-    this.statistics = statistics;
+  loadHistory() {
+    if (localStorage.length != 0) {
+      if (JSON.parse(localStorage.getItem("saves")).length != 0) {
+        // remove first child ("Empty")
+        this.Ehistory.removeChild(this.Ehistory.children[0])
+
+        let saves = JSON.parse(localStorage.getItem("saves"));
+        for (const save of saves) {
+          this.#addHistoryToHtml(save)
+        }
+      }
+    } else {
+      localStorage.setItem("saves", "[]")
+    }
   }
 
-  cleanSlate() {
+  #addHistoryToHtml(save) {
+    let listItem = document.createElement("li");
+    listItem.innerText = `${save.wpm}wpm - ${save.accuracy}%`;
+    this.Ehistory.appendChild(listItem)
+  }
+
+  addHistory() {
+    const empty = UI.find("#e");
+    if (empty) {
+      this.Ehistory.removeChild(empty)
+    }
+
+    let save = State.statistics.getSave();
+    this.#addHistoryToHtml(save)
+
+    // saving to local storage 
+    let saves = localStorage.getItem("saves");
+    saves = JSON.parse(saves);
+    saves.push(save)
+    localStorage.setItem("saves", JSON.stringify(saves))
+  }
+
+  windowListener() {
+    document.addEventListener("keydown", (e)=>{
+      if (e.key == "Tab") {
+        e.preventDefault()
+      }
+      if (e.key == "Enter" && e.ctrlKey) {
+        State.new()
+      }
+    })
+  }
+
+  listenNewQuote() {
+    this.EnewQuote.addEventListener("click", () => {
+      State.new()
+    })
+  }
+
+  restart() {
+    this.stopDisplayingStatistics()
+
     this.Etime.innerText = "0";
     this.Ewords.innerText = "0";
     this.Emistakes.innerText = "0";
@@ -170,60 +419,92 @@ class UI {
     this.Einput.disabled = false;
   }
 
+  #dt() {
+    // displaying time with time elapsed since started typing
+    this.Etime.innerText = parseInt(State.time.elapsed);
+    this.Ewords.innerText = State.statistics.rawWordsTyped;
+    this.Emistakes.innerText = State.statistics.letterMistakes;
+
+    State.statistics.calculate()
+
+    this.Ewpm.innerText = State.statistics.wpm;
+    this.ErawWpm.innerText = State.statistics.rawWpm;
+    this.Eaccuracy.innerText = State.statistics.accuracy;
+
+
+
+  }
+
   // called when user first presses and key and finishes quote 
   async displayStatistics() {
     // wpm (raw, adjusted)
     // accuracy
     // let elapsedTime = this.elapsedTime;
 
+
     do {
-      console.log("running")
-      // displaying time with time elapsed since started typing
-      this.Etime.innerText = parseInt(this.time.elapsed);
-      this.Ewords.innerText = this.statistics.rawWordsTyped;
-      this.Emistakes.innerText = this.statistics.letterMistakes;
 
-      this.statistics.calculate()
+      this.#dt()
+      try {
+        await new Promise((resolve, reject) => {
+          let abort = () => {
+            clearTimeout(timeout)
+            reject("aborted")
+          }
 
-      this.Ewpm.innerText = this.statistics.wpm;
-      this.ErawWpm.innerText = this.statistics.rawWpm;
-      this.Eaccuracy.innerText = this.statistics.accuracy;
+          this.signal.addEventListener("abort", abort)
 
-      if (this.input.index >= this.quote.length) {
-        break;
+          let timeout = setTimeout(() => {
+            this.signal.removeEventListener("abort", abort)
+            resolve()
+          }, 100)
+        })
+      } catch (error) {
+        if (error == "aborted") {
+          console.log("calculateStat...() aborted")
+          return;
+        } else {
+          console.log(error)
+          break;
+        }
       }
 
-      await new Promise((resolve, reject) => {
-        setTimeout(() => { resolve() }, 100)
-      })
-
       // elapsedTime = calculateElapsedTime();
-    } while (this.time.elapsed <= this.time.limit);
+    } while (State.time.elapsed <= State.time.limit);
     // 120 = time limit (2 minutes)
+
+    // display statistics one last time
+    this.#dt()
 
     // if user did not finish the quote
     // disable input
     // clear input
     // remove indicator manually
     // update user quote to show removed indicator 
-    if (this.input.index < this.quote.length - 1) {
+    if (State.input.index < State.quote.length - 1) {
       // remove indicator 
-      this.letters[this.index] = this.quote.letters[this.index];
+      State.input.letters[State.input.index] = State.quote.letters[State.input.index];
 
       // setting letterIndex as if user finished quote
-      letterIndex = this.quote.length;
+      // State.input.index = State.quote.length;
 
-      input.disabled = true;
-      input.value = "";
+      State.indicator.remove()
 
+      this.Einput.disabled = true;
+      this.Einput.value = "";
 
-      displayUserQuote()
+      this.displayQuote()
     }
+  }
 
+  stopDisplayingStatistics() {
+    this.abortController.abort()
+    this.abortController = new AbortController();
+    this.signal = this.abortController.signal;
   }
 
   displayQuote() {
-    this.Equote.innerHTML = this.input.letters.join("");
+    this.Equote.innerHTML = State.input.letters.join("");
   }
 
   static find(what) {
@@ -231,37 +512,66 @@ class UI {
   }
 }
 
-class Stopwatch {
+class Time {
   constructor(tl = 60) {
+    State.time = this;
     // default time_limit is 60 seconds (1 minute)
     this.beginning = 0;
     this.elapsed = 0;
     this.limit = tl;
+
+    this.abortController = new AbortController();
+    this.signal = this.abortController.signal;
   }
 
   async start() {
+    console.log("running now")
     this.beginning = performance.now();
     while (this.elapsed < this.limit) {
       this.elapsed = (performance.now() - this.beginning) / 1000;
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve()
-        }, 100)
-      })
+      try {
+        await new Promise((resolve, reject) => {
+          let abort = () => {
+            clearTimeout(timeout)
+            reject("aborted")
+          }
+
+          this.signal.addEventListener("abort", abort)
+
+          let timeout = setTimeout(() => {
+            this.signal.removeEventListener("abort", abort)
+            resolve()
+          }, 100)
+        })
+      } catch (error) {
+        if (error == "aborted") {
+          console.log("Time.start() aborted")
+          break;
+        } else {
+          console.log(error)
+          break;
+        }
+      }
     }
+  }
+
+  stop() {
+    this.abortController.abort()
+    this.abortController = new AbortController();
+    this.signal = this.abortController.signal;
   }
 
   restart() {
     // in case restarted before elapsedTime met time_limit
-    this.elapsed = this.limit;
-
     this.beginning = 0;
+    this.elapsed = 0;
+    this.stop()
   }
 }
 
 class Statistics {
-  constructor(time) {
-    this.time = time;
+  constructor() {
+    State.statistics = this;
     this.accuracy = 0;
     this.wordsTyped = 0;
     this.rawWordsTyped = 0;
@@ -273,42 +583,73 @@ class Statistics {
   }
 
   calculate() {
-    const elapsedTime = this.time.elapsed;
+    const elapsedTime = State.time.elapsed;
     this.accuracy = parseInt(((this.attemptedLetters - this.letterMistakes) * 100) / this.attemptedLetters);
     this.wpm = parseInt(this.wordsTyped / (elapsedTime / 60));
     this.rawWpm = parseInt(this.rawWordsTyped / (elapsedTime / 60));
   }
+
+  getSave() {
+    return {
+      "accuracy": this.accuracy,
+      "wordsTyped": this.wordsTyped,
+      "rawWordsTyped": this.rawWordsTyped,
+      "wpm": this.wpm,
+      "rawWpm": this.rawWpm,
+      "letterMistakes": this.letterMistakes,
+      "wordsMistakes": this.wordMistakes,
+      "attemptedLetters": this.attemptedLetters
+    }
+  }
+
+  restart() {
+    this.accuracy = 0;
+    this.wordsTyped = 0;
+    this.rawWordsTyped = 0;
+    this.wpm = 0;
+    this.rawWpm = 0;
+    this.letterMistakes = 0;
+    this.wordMistakes = 0;
+    this.attemptedLetters = 0;
+  }
 }
 
 class Input {
-  constructor(quote, time, ui, statistics) {
-    this.input = ui.Einput;
-    this.quote = quote;
-    this.time = time;
-    this.ui = ui;
-    this.statistics = statistics;
+  constructor() {
+    State.input = this;
+
     this.indicator = null;
-
-
+    this.input = null;
     // index track position in quote
     this.index = 0;
     // tracks position in word
     this.wordIndex = 0;
     this.quoteLetter = null;
-
     this.letters = null;
 
-    console.log(this.time)
+    this.new = true;
+  }
+
+  restart() {
+    this.input.removeEventListener("keydown", this.firstPress)
+    this.index = 0;
+    this.wordIndex = 0;
+    this.quoteLetter = null;
+    this.letters = null;
+    this.clearInput()
+  }
+
+  start() {
+    this.input = State.ui.Einput;
+    this.input.focus()
     // two event listeners added
-    this.#listenToPress()
+    if (this.new) {
+      this.#listenToPress()
+    }
     this.firstPress = () => {
       this.#firstPress()
     }
     this.input.addEventListener("keydown", this.firstPress)
-  }
-
-  assingIndicator(indicator) {
-    this.indicator = indicator;
   }
 
   async #removeFirstPress() {
@@ -317,7 +658,7 @@ class Input {
 
   // called every new slate 
   fillUserLetters() {
-    this.letters = Array.from(this.quote.letters);
+    this.letters = Array.from(State.quote.letters);
     // assigning obscured classes to all letters
     for (let i = 0; i < this.letters.length; i++) {
       this.letters[i] = `<span class="obscure">${this.letters[i]}</span>`;
@@ -326,18 +667,26 @@ class Input {
 
   // on a clean slate user pressed key for the first time 
   #firstPress() {
-    this.time.start()
-    this.ui.displayStatistics()
+    State.time.start()
+    State.ui.displayStatistics()
     this.#removeFirstPress()
   }
 
+  isKeyToIgnore(e) {
+    if (e.key == "Tab" || e.key == "Enter" || e.key == "Escape" || e.key == "Meta" || e.key == "Control" || e.key == "Shift" || e.key == "Tab" || e.key == "Alt" ||
+      e.key == "ArrowUp" || e.key == "ArrowLeft" || e.key == "ArrowDown" || e.key == "ArrowRight") {
+        return true;
+    }
+    return false;
+  }
+
   #listenToPress() {
+    this.new = false;
     this.input.addEventListener("keydown", (e) => {
 
-      this.quoteLetter = this.quote.letters[this.index];
+      this.quoteLetter = State.quote.letters[this.index];
 
-      if (e.key == "Escape" || e.key == "Meta" || e.key == "Control" || e.key == "Shift" || e.key == "Tab" || e.key == "Alt" ||
-        e.key == "ArrowUp" || e.key == "ArrowLeft" || e.key == "ArrowDown" || e.key == "ArrowRight") {
+      if (this.isKeyToIgnore(e)) {
         return;
       }
 
@@ -355,44 +704,47 @@ class Input {
   }
 
   markLetterWrong() {
-    this.letters[this.index] = `<span class="wrong">${this.quote.letters[this.index]}</span>`;
-    this.statistics.letterMistakes += 1;
+    this.letters[this.index] = `<span class="wrong">${State.quote.letters[this.index]}</span>`;
+    State.statistics.letterMistakes += 1;
 
     // not counting spaces as part of word 
-    if (this.quote.letters[this.index] != " ") {
-      this.statistics.wordMistakes += 1;
+    if (State.quote.letters[this.index] != " ") {
+      State.statistics.wordMistakes += 1;
     }
   }
 
   space(e) {
     if (this.wordIndex != 0) {
       // skip word but mark skipped letters as wrong
-      while (this.quote.letters[this.index] != " ") {
+      while (State.quote.letters[this.index] != " ") {
         this.markLetterWrong()
         this.wordIndex += 1;
         this.index += 1;
-        this.statistics.attemptedLetters += 1;
+        State.statistics.attemptedLetters += 1;
       }
 
-      this.statistics.wordsTyped += ((((this.wordIndex - this.statistics.wordMistakes) * 100) / this.wordIndex) / 100);
+      State.statistics.wordsTyped += ((((this.wordIndex - State.statistics.wordMistakes) * 100) / this.wordIndex) / 100);
       // have to make -1 because later in the code wordIndex is +=1 
       // thus when new word occurs it will be 0 instead of 1 (with wordIndex = 0)
       this.wordIndex = -1;
-      this.statistics.rawWordsTyped += 1;
-      this.statistics.wordMistakes = 0;
+      State.statistics.rawWordsTyped += 1;
+      State.statistics.wordMistakes = 0;
       this.clearInput(e)
+      return true;
     } else {
       // don't do anything
       this.clearInput(e)
-      return;
+      return false;
     }
   }
 
   letter(e) {
-    this.statistics.attemptedLetters += 1;
+    State.statistics.attemptedLetters += 1;
 
     if (e.key == " " || this.quoteLetter == " ") {
-      this.space(e)
+      if (!this.space(e)) {
+        return;
+      }
     }
 
 
@@ -406,30 +758,33 @@ class Input {
       // is not equal (wrong)
       this.markLetterWrong()
     }
-    this.index += 1;
-    this.wordIndex += 1;
-    this.indicator.move()
-    this.ui.displayQuote()
-
 
     // finished quote
-    if (this.index >= this.quote.length) {
-      // run statistics one last time
-      this.ui.displayStatistics()
-      this.input.disabled = true;
+    if (this.index >= State.quote.length) {
+      // add results to history
+      State.ui.addHistory()
+
+      State.time.stop()
+      State.ui.stopDisplayingStatistics()
+      State.ui.Einput.disabled = true;
       this.clearInput(e)
     }
+
+    this.index += 1;
+    this.wordIndex += 1;
+    State.indicator.move()
+    State.ui.displayQuote()
   }
 
   #name_again() {
     if (this.letters[this.index].includes("wrong")) {
-      this.statistics.wordMistakes -= 1;
+      State.statistics.wordMistakes -= 1;
     }
 
     if (this.index >= 1) {
       // obscuring current letter in quote
       // >= 1 because the first letter is NEVER obscured (indicator sits there)
-      this.letters[this.index] = `<span class="obscure">${this.quoteLetter}</span>`;
+      this.letters[this.index] = `<span class="obscure">${State.quote.letters[this.index]}</span>`;
     }
 
     // preventing letterIndex from falling below 0 (negatives) 
@@ -443,6 +798,7 @@ class Input {
   backspace() {
     // selectionis always left to right
     if (this.wordIndex > 0) {
+      console.log(this.input)
       if (this.input.selectionStart == 0 && this.input.selectionEnd > 0 && this.input.selectionEnd == this.wordIndex) {
         // obscuring every letter of the current word typed
         while (this.wordIndex > 0) {
@@ -453,54 +809,18 @@ class Input {
         this.#name_again()
       }
 
-      this.indicator.move()
-      this.ui.displayQuote()
+      State.indicator.move()
+      State.ui.displayQuote()
     }
   }
 
   clearInput(e) {
-    e.preventDefault()
+    if (e) {
+      e.preventDefault()
+    }
     this.input.value = "";
   }
 }
 
-class Parent {
-  constructor() {
-    this.ui = null;
-    this.quote = null;
-    this.time = null;
-    this.statistics = null;
-    this.input = null;
-    this.indicator = null;
-  }
-}
-
-class State {
-  constructor() {
-    this.ui = new UI();
-    this.quote = new Quote();
-    this.time = new Stopwatch();
-    this.statistics = new Statistics(this.time);
-    this.input = new Input(this.quote, this.time, this.ui, this.statistics);
-    this.indicator = new Indicator(this.quote, this.input);
-    this.input.assingIndicator(this.indicator)
-
-    this.start()
-  }
-
-  start() {
-    this.ui.relationships(this.time, this.input, this.quote, this.statistics)
-    this.input.fillUserLetters()
-    this.indicator.move()
-    this.ui.displayQuote()
-  }
-
-  new() {
-    this.ui.cleanSlate();
-    this.quote.new();
-    this.time.restart();
-  }
-}
-
-
+new Quote(); new Indicator(); new UI(); new Time(); new Statistics(); new Input();
 let state = new State();

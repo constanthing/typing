@@ -1,35 +1,134 @@
 <!doctype html>
 
 <html>
+
 <head>
 </head>
+
 <body>
 
-<input/>
+	<p></p>
+	<button id="start">Start</button>
+	<button id="stop">Stop</button>
 
-<script>
-let input = document.querySelector("input");
+	<input />
 
-let firstListener;
+	<script>
+		function find(what) {
+			return document.querySelector(what);
+		}
+		const timer = find("p");
+		const startButton = find("#start");
+		const stop = find("#stop");
 
-async function doSomething() {
-	console.log("doing somethign")
-	input.removeEventListener("click", clicked)
-}
+		let abortController = new AbortController();
+		let signal = abortController.signal;
 
-function clicked() {
-	console.log("first key press")
-	doSomething()
-}
+		let startTime = 0;
+		let elapsed = 0;
+		async function start() {
+			startTime = performance.now();
+
+			while (true) {
+				elapsed = (performance.now() - startTime) / 1000;
+				timer.innerText = elapsed;
+				try {
+					await new Promise((resolve, reject) => {
+						// setTimeout is part of the asynchronous API 
+						// timer set up in background
+						// callback function placed into queue after delay finishes (2000 in this case) 
+						// till then function runs normally
+						let temp = () => {
+							console.log("aborted")
+							clearTimeout(wait)
+							reject(new Error("Aborted"))
+						}
+						let wait = setTimeout(() => {
+							signal.removeEventListener("abort", temp)
+							resolve()
+						}, 100)
+
+						signal.addEventListener("abort", temp)
+				})
+			} catch (error) {
+				if (error.message == "Aborted") {
+					break;
+					console.log("stoped manually")
+				} else {
+					console.log(error)
+				}
+			}
+		}
+
+		console.log("finished")
+		}
+
+		startButton.addEventListener("click", () => {
+			start()
+		})
+
+		stop.addEventListener("click", () => {
+			abortController.abort();
+
+			// after calling abort()
+			// its state changes to aborted (immutable)
+			// one time use
+
+			abortController = new AbortController();
+			signal = abortController.signal;
+		})
 
 
-input.addEventListener("click", clicked);
 
-const secondListener = input.addEventListener("click", ()=>{
-	console.log("second one")
-});
+		let input = document.querySelector("input");
+
+		let firstListener;
+
+		async function doSomething() {
+			console.log("doing somethign")
+			input.removeEventListener("click", clicked)
+		}
+
+		function clicked() {
+			console.log("first key press")
+			doSomething()
+		}
 
 
-</script>
+		input.addEventListener("click", clicked);
+
+		const secondListener = input.addEventListener("click", () => {
+			console.log("second one")
+		});
+
+
+		class Parent {
+			static name = null;
+			static age = null;
+			constructor() {
+			}
+		}
+
+		class Child1 {
+			constructor() {
+				Parent.name = this;
+			}
+		}
+
+		class Child2 {
+			constructor() {
+				Parent.age = 21;
+			}
+		}
+
+		let p = new Parent();
+		console.log(p)
+		let c1 = new Child1();
+		console.log(p)
+		let c2 = new Child2();
+		console.log(p)
+
+	</script>
 </body>
+
 </html>

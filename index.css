@@ -37,6 +37,7 @@ main {
 
 
 input {
+    box-sizing: border-box;
     width: 100%;
     /* pointer-events: none; <- disables the input */
 }
@@ -83,4 +84,10 @@ input {
 
 .obscure {
     opacity: 50%;
+}
+
+#newQuote {
+    width: 100%;
+    padding: .5em initial;
+    box-sizing: border-box;
 }

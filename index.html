@@ -1,12 +1,37 @@
 <!doctype html>
 <html>
-    <head>
-        <title>Typing</title>
-        <link rel="stylesheet" href="index.css"/>
-    </head>
-    <body>
 
-        <main>
+<head>
+    <title>Typing</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+    <main>
+
+        <header>
+            <img src="settings.svg" alt="Setting icon" id="settings"/>
+
+            </div>
+            <h1>tieping</h1>
+
+            <nav>
+                <ul>
+                    <li>home</li>
+                    <li>statistics</li>
+                </ul>
+            </nav>
+        </header>
+
+        <section id="program">
+
             <div id="statistics">
                 <div>
                     <p id="time">Time: <span>0</span>s</p>
@@ -21,6 +46,8 @@
             </div>
 
 
+
+
             <div id="typing">
                 <div id="typingDisplay">
                     <div id="userInput">
@@ -28,10 +55,12 @@
                     </div>
                 </div>
 
-                <input type="text" focus/>
             </div>
+            <div id="typingNewContainer">
+                <input type="text" focus />
 
-            <button id="newQuote" title="ctrl + enter">NEW QUOTE</button>
+                <img src="arrow.svg" alt="arrow pointing right " id="newQuote" title="ctrl+enter"/>
+            </div>
 
             <div id="history">
                 <h4>History</h4>
@@ -39,10 +68,15 @@
                     <li id="e">Empty</li>
                 </ul>
             </div>
+        </section>
 
-        </main>
+    </main>
 
 
-        <script src="index.js"></script>
-    </body>
+    <script src="Quote.js"></script>
+    <script src="UI.js"></script>
+    <script src="Input.js"></script>
+    <script src="index.js"></script>
+</body>
+
 </html>

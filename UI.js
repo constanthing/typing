@@ -3,16 +3,18 @@ class UI {
         State.ui = this;
 
         // E = element
-        this.Etime = UI.find("#time span");
-        this.Ewords = UI.find("#wordsCompleted span");
-        this.Emistakes = UI.find("#mistakes span");
+        this.Etime = UI.find("#timeText");
+        this.Ewords = null;
+        this.Emistakes = UI.find("#mistakesText");
 
         // change #speed to #wpm
-        this.Ewpm = UI.find("#speed span");
-        this.ErawWpm = UI.find("#rawSpeed span");
-        this.Eaccuracy = UI.find("#accuracy span");
+        this.Ewpm = UI.find("#speedText");
+        this.ErawWpm = null;
+        this.Eaccuracy = UI.find("#accuracyText");
 
-        this.Equote = UI.find("#userInput p");
+        this.Equote = UI.find("#userInput");
+        this.EquoteOrigin = UI.find("#quoteOrigin");
+        this.EquoteAuthor = UI.find("#quoteAuthor");
         this.Einput = UI.find("input");
 
         this.EnewQuote = UI.find("#newQuote");
@@ -82,32 +84,42 @@ class UI {
         })
     }
 
+    disableInput(disable) {
+        if (!disable) {
+            this.Einput.disabled = false;
+            this.Einput.classList.remove("disabled")
+        } else {
+            this.Einput.disabled = true;
+            this.Einput.classList.add("disabled")
+        }
+    }
+
     restart() {
         this.stopDisplayingStatistics()
 
         this.Etime.innerText = "0";
-        this.Ewords.innerText = "0";
+        // this.Ewords.innerText = "0";
         this.Emistakes.innerText = "0";
 
         this.Ewpm.innerText = "0";
-        this.ErawWpm.innerText = "0";
+        // this.ErawWpm.innerText = "0";
         this.Eaccuracy.innerText = "0";
 
         this.Equote.innerText = "";
         this.Einput.value = "";
-        this.Einput.disabled = false;
+        this.disableInput(false)
     }
 
     #dt() {
         // displaying time with time elapsed since started typing
         this.Etime.innerText = parseInt(State.time.elapsed);
-        this.Ewords.innerText = State.statistics.rawWordsTyped;
+        // this.Ewords.innerText = State.statistics.rawWordsTyped;
         this.Emistakes.innerText = State.statistics.letterMistakes;
 
         State.statistics.calculate()
 
         this.Ewpm.innerText = State.statistics.wpm;
-        this.ErawWpm.innerText = State.statistics.rawWpm;
+        // this.ErawWpm.innerText = State.statistics.rawWpm;
         this.Eaccuracy.innerText = State.statistics.accuracy;
 
 
@@ -169,7 +181,7 @@ class UI {
 
             State.indicator.remove()
 
-            this.Einput.disabled = true;
+            this.disableInput(true)
             this.Einput.value = "";
 
             this.displayQuote()
@@ -183,6 +195,8 @@ class UI {
     }
 
     displayQuote() {
+        this.EquoteOrigin.innerText = State.quote.origin;
+        this.EquoteAuthor.innerText = State.quote.author;
         this.Equote.innerHTML = State.input.letters.join("");
     }
 

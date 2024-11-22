@@ -52,8 +52,8 @@ header li {
 
 
 #settings {
-    height: 3em;
-    width: 3em;
+    height: 2em;
+    width: 2em;
 }
 
 
@@ -67,28 +67,94 @@ header li {
 }
 
 
-#typingDisplay {
-    position: relative;
+
+#statsBar {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2em;
 }
-#typingDisplay p {
-    word-spacing: .4em;
+
+
+
+#quoteInfo {
+    width: 35%;
+    text-align: right;
+}
+#quoteInfo p {
+    color: #FFD971;
+}
+/* author */
+#quoteInfo small {
+    color: gray;
+}
+
+
+#temporary {
+    border-radius: .3em;
+    background: rgb(79, 76, 76);
+    padding: .7em 1em;
+    box-sizing: border-box;
+
+    display: flex;
+    min-width: 40%;
+    width: 40%;
+    width: fit-content;
+    height: fit-content;
+}
+.pair:first-child {
+}
+.pair {
+    min-width: 25%;
+    width: 25%;
+    display: flex;
+    align-items: center;
+    height: fit-content;
+}
+.pair svg {
+    height: .9em;
+    width: .9em;
+    padding-right: .2em;
+}
+.pair small {
+    height: fit-content;
+}
+.pair path {
+}
+#speedImg {
+    height: 2em;
+}
+
+
+
+
+#userInput {
+    width: 100%;
+    /* causes text overflow bug */
+    /* word-spacing: .2em; */
     letter-spacing: 1px;
     font-size: 1.5em;
-    font-weight: 600;
+    font-weight: 400;
     /* 
     In JS adding " " to the (p) element does not appear.
     pre-wrap preserves whitespace so " " does appear.
      */
-    white-space: pre-wrap;
+    /* white-space: pre-wrap; */
+}
+#userInput span {
+    margin: 0; padding: 0;
 }
 input {
     background: #D9D9D9;
-    font-size: 1.5em;
+    font-size: 1.7em;
     width: 85%;
 }
+.disabled {
+    background: gray;
+}
 #newQuote {
-    height: 1.5em;
-    width: 10%;
+    width: 2em;
 }
 #typingNewContainer {
     margin-top: 1em;
@@ -114,9 +180,11 @@ input {
 
 #userInput .wrong {
     border-bottom: solid 1px red;
+    position: relative;
     color: red;
 }
 #userInput .correct {
+    position: relative;
     color: #FFD971;
 }
 
@@ -161,9 +229,23 @@ input {
 
 
 .obscure {
+    position: relative;
     opacity: 50%;
 }
 
 #history {
     display: none;
+}
+
+
+footer {
+    position: absolute;
+    right: 50%;
+    bottom: 5%;
+    transform: translateX(50%);
+    color: gray;
+}
+#logo {
+    display: inline-block;
+    height: 1.2em;
 }

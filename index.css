@@ -33,7 +33,6 @@ main h1 {
 header {
     position: relative;
     box-sizing: border-box;
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;

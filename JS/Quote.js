@@ -116,6 +116,27 @@ class Quote {
         this.breakDownQuote()
     }
 
+    new() {
+        // clearning lettersOfQuote
+        this.letters.length = 0;
+
+        const oldQuoteIndex = this.index;
+        let temp = null;
+        // makes sure that newly generated quote isn't the same as the old one
+        while (this.index == oldQuoteIndex) {
+            temp = this.getRandom();
+        }
+
+        this.quote = temp;
+        this.breakDownQuote()
+    }
+
+    getRandom() {
+        const random = Math.round(Math.random() * (Quote.quotes.length - 1));
+        this.index = random;
+        return Quote.quotes[random];
+    }
+
     // private method
     #getLetters() {
         for (let letter of this.quote) {
@@ -136,30 +157,5 @@ class Quote {
         this.#getLetters()
         // we don't want to count the manually added " " (so -1)
         this.length = this.quote.length - 1;
-    }
-
-    new() {
-        // clearning lettersOfQuote
-        this.letters.length = 0;
-
-        const oldQuoteIndex = this.index;
-        let temp = null;
-        // makes sure that newly generated quote isn't the same as the old one
-        while (this.index == oldQuoteIndex) {
-            temp = this.getRandom();
-        }
-
-        this.quote = temp;
-        this.breakDownQuote()
-    }
-
-    isWrongLetter() {
-
-    }
-
-    getRandom() {
-        const random = Math.round(Math.random() * (Quote.quotes.length - 1));
-        this.index = random;
-        return Quote.quotes[random];
     }
 }

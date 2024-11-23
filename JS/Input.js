@@ -14,15 +14,6 @@ class Input {
         this.new = true;
     }
 
-    restart() {
-        this.input.removeEventListener("keydown", this.firstPress)
-        this.index = 0;
-        this.wordIndex = 0;
-        this.quoteLetter = null;
-        this.letters = null;
-        this.clearInput()
-    }
-
     start() {
         this.input = State.ui.Einput;
         this.input.focus()
@@ -36,66 +27,24 @@ class Input {
         this.input.addEventListener("keydown", this.firstPress)
     }
 
-    async #removeFirstPress() {
+    restart() {
         this.input.removeEventListener("keydown", this.firstPress)
+        this.index = 0;
+        this.wordIndex = 0;
+        this.quoteLetter = null;
+        this.letters = null;
+        this.clearInput()
     }
 
-    // called every new slate 
-    fillUserLetters() {
-        this.letters = Array.from(State.quote.letters);
-        // assigning obscured classes to all letters
-        for (let i = 0; i < this.letters.length; i++) {
-            this.letters[i] = `<span class="obscure">${this.letters[i]}</span>`;
+    clearInput(e) {
+        if (e) {
+            e.preventDefault()
         }
+        this.input.value = "";
     }
 
-    // on a clean slate user pressed key for the first time 
-    #firstPress() {
-        State.time.start()
-        State.ui.displayStatistics()
-        this.#removeFirstPress()
-    }
 
-    isKeyToIgnore(e) {
-        if (e.key == "Tab" || e.key == "Enter" || e.key == "Escape" || e.key == "Meta" || e.key == "Control" || e.key == "Shift" || e.key == "Tab" || e.key == "Alt" ||
-            e.key == "ArrowUp" || e.key == "ArrowLeft" || e.key == "ArrowDown" || e.key == "ArrowRight") {
-            return true;
-        }
-        return false;
-    }
 
-    #listenToPress() {
-        this.new = false;
-        this.input.addEventListener("keydown", (e) => {
-
-            this.quoteLetter = State.quote.letters[this.index];
-
-            if (this.isKeyToIgnore(e)) {
-                return;
-            }
-
-            // ctrl + a = select all
-            if (e.metaKey && e.key == "a") {
-                return;
-            }
-
-            if (e.key == "Backspace") {
-                this.backspace(e)
-            } else {
-                this.letter(e)
-            }
-        })
-    }
-
-    markLetterWrong() {
-        this.letters[this.index] = `<span class="wrong">${State.quote.letters[this.index]}</span>`;
-        State.statistics.letterMistakes += 1;
-
-        // not counting spaces as part of word 
-        if (State.quote.letters[this.index] != " ") {
-            State.statistics.wordMistakes += 1;
-        }
-    }
 
     space(e) {
         if (this.wordIndex != 0) {
@@ -163,6 +112,67 @@ class Input {
 
     }
 
+    async #removeFirstPress() {
+        this.input.removeEventListener("keydown", this.firstPress)
+    }
+
+    // called every new slate 
+    fillUserLetters() {
+        this.letters = Array.from(State.quote.letters);
+        // assigning obscured classes to all letters
+        for (let i = 0; i < this.letters.length; i++) {
+            this.letters[i] = `<span class="obscure">${this.letters[i]}</span>`;
+        }
+    }
+
+    // on a clean slate user pressed key for the first time 
+    #firstPress() {
+        State.time.start()
+        State.ui.displayStatistics()
+        this.#removeFirstPress()
+    }
+
+    isKeyToIgnore(e) {
+        if (e.key == "Tab" || e.key == "Enter" || e.key == "Escape" || e.key == "Meta" || e.key == "Control" || e.key == "Shift" || e.key == "Tab" || e.key == "Alt" ||
+            e.key == "ArrowUp" || e.key == "ArrowLeft" || e.key == "ArrowDown" || e.key == "ArrowRight") {
+            return true;
+        }
+        return false;
+    }
+
+    #listenToPress() {
+        this.new = false;
+        this.input.addEventListener("keydown", (e) => {
+
+            this.quoteLetter = State.quote.letters[this.index];
+
+            if (this.isKeyToIgnore(e)) {
+                return;
+            }
+
+            // ctrl + a = select all
+            if (e.metaKey && e.key == "a") {
+                return;
+            }
+
+            if (e.key == "Backspace") {
+                this.backspace(e)
+            } else {
+                this.letter(e)
+            }
+        })
+    }
+
+    markLetterWrong() {
+        this.letters[this.index] = `<span class="wrong">${State.quote.letters[this.index]}</span>`;
+        State.statistics.letterMistakes += 1;
+
+        // not counting spaces as part of word 
+        if (State.quote.letters[this.index] != " ") {
+            State.statistics.wordMistakes += 1;
+        }
+    }
+
     #name_again() {
         if (this.letters[this.index].includes("wrong")) {
             State.statistics.wordMistakes -= 1;
@@ -200,11 +210,5 @@ class Input {
         }
     }
 
-    clearInput(e) {
-        if (e) {
-            e.preventDefault()
-        }
-        this.input.value = "";
-    }
 }
 

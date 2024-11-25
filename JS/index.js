@@ -12,7 +12,7 @@ class State {
 
   static start() {
     State.input.fillUserLetters()
-    State.indicator.move()
+    State.indicator.addToQuote()
     State.ui.displayQuote()
 
     State.input.start()

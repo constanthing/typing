@@ -225,6 +225,10 @@ input {
     animation-timing-function: steps(1, start);
     animation-play-state: running;
 }
+.indicator {
+    color: white;
+}
+
 
 
 .obscure {

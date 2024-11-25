@@ -197,7 +197,9 @@ class UI {
     displayQuote() {
         this.EquoteOrigin.innerText = State.quote.origin;
         this.EquoteAuthor.innerText = State.quote.author;
-        this.Equote.innerHTML = State.input.letters.join("");
+        for (const letter of State.input.letters) {
+            this.Equote.appendChild(letter)
+        }
     }
 
     static find(what) {

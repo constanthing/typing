@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            background: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <p></p>
+
+    <script>
+        const p = document.querySelector("p");
+        const test = document.createElement("span");
+        test.innerText = "[TEST]"
+
+        p.appendChild(test)
+
+        const string = "Hello World".split("");
+
+        for (const letter of string) {
+            const span = document.createElement("span");
+            span.innerText = letter;
+            p.appendChild(span);
+        }
+
+
+        async function move() {
+            let index = 0;
+            while (index < string.length) {
+                await new Promise((resolve, reject) => {
+                    setTimeout(()=>{
+                        let ahead = index + 1;
+                        p.insertBefore(test, p.children[ahead])
+                        resolve()
+                    }, 1000)
+                })
+                index += 1;
+            }
+        }
+        move()
+    </script>
+</body>
+</html>

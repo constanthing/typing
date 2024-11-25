@@ -86,7 +86,10 @@ class Input {
         if (this.quoteLetter == e.key) {
             // is equal (right)
             // make letter right 
-            this.letters[this.index] = `<span class="correct">${e.key}</span>`;
+            // this.letters[this.index] = `<span class="correct">${e.key}</span>`;
+            this.letters[this.index].classList.remove("obscure")
+            this.letters[this.index].classList.remove("indicator")
+            this.letters[this.index].classList.add("correct")
         } else {
             // is not equal (wrong)
             this.markLetterWrong()
@@ -97,7 +100,7 @@ class Input {
         this.index += 1;
         this.wordIndex += 1;
         State.indicator.move()
-        State.ui.displayQuote()
+        // State.ui.displayQuote()
 
         // finished quote
         if (this.index >= State.quote.length + 1) {
@@ -121,8 +124,15 @@ class Input {
         this.letters = Array.from(State.quote.letters);
         // assigning obscured classes to all letters
         for (let i = 0; i < this.letters.length; i++) {
-            this.letters[i] = `<span class="obscure">${this.letters[i]}</span>`;
+            let element = document.createElement("span");
+            element.classList.add("obscure")
+            element.innerText = this.letters[i];
+            this.letters[i] = element;
         }
+    }
+
+    modifyLetter() {
+
     }
 
     // on a clean slate user pressed key for the first time 
@@ -164,7 +174,11 @@ class Input {
     }
 
     markLetterWrong() {
-        this.letters[this.index] = `<span class="wrong">${State.quote.letters[this.index]}</span>`;
+        this.letters[this.index].classList.remove("obscure")
+        this.letters[this.index].classList.remove("correct")
+        this.letters[this.index].classList.remove("indicator")
+        this.letters[this.index].classList.add("wrong")
+        // this.letters[this.index] = `<span class="wrong">${State.quote.letters[this.index]}</span>`;
         State.statistics.letterMistakes += 1;
 
         // not counting spaces as part of word 
@@ -174,14 +188,18 @@ class Input {
     }
 
     #name_again() {
-        if (this.letters[this.index].includes("wrong")) {
+        if (this.letters[this.index].classList.contains("wrong")) {
             State.statistics.wordMistakes -= 1;
         }
 
         if (this.index >= 1) {
             // obscuring current letter in quote
             // >= 1 because the first letter is NEVER obscured (indicator sits there)
-            this.letters[this.index] = `<span class="obscure">${State.quote.letters[this.index]}</span>`;
+            this.letters[this.index].classList.remove("correct")
+            this.letters[this.index].classList.remove("wrong")
+            this.letters[this.index].classList.remove("indicator")
+            this.letters[this.index].classList.add("obscure")
+            // this.letters[this.index] = `<span class="obscure">${State.quote.letters[this.index]}</span>`;
         }
 
         // preventing letterIndex from falling below 0 (negatives) 
@@ -206,7 +224,7 @@ class Input {
             }
 
             State.indicator.move()
-            State.ui.displayQuote()
+            // State.ui.displayQuote()
         }
     }
 

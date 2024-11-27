@@ -174,12 +174,7 @@ class UI {
         // update user quote to show removed indicator 
         if (State.input.index < State.quote.length - 1) {
             // remove indicator 
-            State.input.letters[State.input.index] = State.quote.letters[State.input.index];
-
-            // setting letterIndex as if user finished quote
-            // State.input.index = State.quote.length;
-
-            State.indicator.remove()
+            State.input.letters[State.input.index].classList.remove("indicator")
 
             this.disableInput(true)
             this.Einput.value = "";

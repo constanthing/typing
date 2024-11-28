@@ -8,14 +8,19 @@ to the element and modify its classes (may run into issue with updating indicato
 as the issue we have is every time we use innerHTML it messes up the rendering
 
 ### TODO
-- add status bar above the quote (shows statistics quickly)
-- if input disabled change its color
-- Prevent any key from starting quote sequence... (exmaple I can press alt and it starts)
+#### General 
+- Add settings
+- Add proper nav 
 - Add history
 - Different type of quote categories
-- Cache system to save history
-- Maybe save finishedTime and call calculate() based on that when quote is finished?
 - Add statistics page (shows graphs, history, etc.)
+#### Specific
+- Add feedback on next quote arrow to indicate it's clickable
+- Prevent any key from starting quote sequence... (exmaple I can press alt and it starts)
+
+- ctrl+f does find ? prevent that? for similar macros? maybe only when typing?
+#### Future
+- Detect keyboard layout (and changes)
 #### For Fun
 - Add scorestreaks
 - Add sound effects (i.e. when spacing on new word without typing, error, etc...)

@@ -45,6 +45,7 @@ class UI {
         }
     }
 
+    // used twice in loadHistory() and addHistory()
     #addHistoryToHtml(save) {
         let listItem = document.createElement("li");
         listItem.innerText = `${save.wpm}wpm - ${save.accuracy}%`;
@@ -58,13 +59,8 @@ class UI {
         }
 
         let save = State.statistics.getSave();
-        this.#addHistoryToHtml(save)
 
-        // saving to local storage 
-        let saves = localStorage.getItem("saves");
-        saves = JSON.parse(saves);
-        saves.push(save)
-        localStorage.setItem("saves", JSON.stringify(saves))
+        this.#addHistoryToHtml(save)
     }
 
     windowListener() {

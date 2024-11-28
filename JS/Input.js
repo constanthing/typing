@@ -14,6 +14,22 @@ class Input {
         this.new = true;
     }
 
+    isLetter(letter) {
+        // https://www.asciitable.com/
+        // https://www.ssec.wisc.edu/~tomw/java/unicode.html --->  basic latin
+        const minRange = 32; // (space)
+        const maxRange = 126; // ~
+
+        let lowerLetter = false;
+        // if its a letter / symbol
+        if (letter.length == 1) {
+            // getting character code
+            lowerLetter = letter.toLowerCase().charCodeAt(0)
+        }
+
+        return lowerLetter >= minRange && lowerLetter <= maxRange;
+    }
+
     start() {
         this.input = State.ui.Einput;
         this.input.focus()
@@ -21,8 +37,16 @@ class Input {
         if (this.new) {
             this.#listenToPress()
         }
-        this.firstPress = () => {
-            this.#firstPress()
+
+        // on a clean slate user pressed key for the first time 
+        this.firstPress = (e) => {
+            // only starts calculating when letter is pressed not a meta, ctrl, shift, ... keys
+            if (this.isLetter(e.key)) {
+                State.time.start()
+                State.ui.displayStatistics()
+                this.#removeFirstPress()
+            }
+
         }
         this.input.addEventListener("keydown", this.firstPress)
     }
@@ -43,9 +67,32 @@ class Input {
         this.input.value = "";
     }
 
+    #listenToPress() {
+        this.new = false;
+        this.input.addEventListener("keydown", (e) => {
 
+            this.quoteLetter = State.quote.letters[this.index];
 
+            if (e.key == "Backspace") {
+                this.backspace(e)
+            }
 
+            if (!this.isLetter(e.key)) {
+                return;
+            }
+            // if (this.isKeyToIgnore(e)) {
+            //     return;
+            // }
+
+            // ctrl + a = select all
+            if (e.metaKey && e.key == "a") {
+                return;
+            }
+
+            this.letter(e)
+        })
+    }
+    
     space(e) {
         if (this.wordIndex != 0) {
             // skip word but mark skipped letters as wrong
@@ -87,15 +134,11 @@ class Input {
             // is equal (right)
             // make letter right 
             // this.letters[this.index] = `<span class="correct">${e.key}</span>`;
-            this.letters[this.index].classList.remove("obscure")
-            this.letters[this.index].classList.remove("indicator")
-            this.letters[this.index].classList.add("correct")
+            this.modifyClassList(this.letters[this.index], "correct")
         } else {
             // is not equal (wrong)
             this.markLetterWrong()
         }
-
-
 
         this.index += 1;
         this.wordIndex += 1;
@@ -131,53 +174,15 @@ class Input {
         }
     }
 
-    modifyLetter() {
 
+    modifyClassList(element, value) {
+        element.classList.remove(element.classList[0])
+        element.classList.add(value)
     }
 
-    // on a clean slate user pressed key for the first time 
-    #firstPress() {
-        State.time.start()
-        State.ui.displayStatistics()
-        this.#removeFirstPress()
-    }
-
-    isKeyToIgnore(e) {
-        if (e.key == "Tab" || e.key == "Enter" || e.key == "Escape" || e.key == "Meta" || e.key == "Control" || e.key == "Shift" || e.key == "Tab" || e.key == "Alt" ||
-            e.key == "ArrowUp" || e.key == "ArrowLeft" || e.key == "ArrowDown" || e.key == "ArrowRight") {
-            return true;
-        }
-        return false;
-    }
-
-    #listenToPress() {
-        this.new = false;
-        this.input.addEventListener("keydown", (e) => {
-
-            this.quoteLetter = State.quote.letters[this.index];
-
-            if (this.isKeyToIgnore(e)) {
-                return;
-            }
-
-            // ctrl + a = select all
-            if (e.metaKey && e.key == "a") {
-                return;
-            }
-
-            if (e.key == "Backspace") {
-                this.backspace(e)
-            } else {
-                this.letter(e)
-            }
-        })
-    }
 
     markLetterWrong() {
-        this.letters[this.index].classList.remove("obscure")
-        this.letters[this.index].classList.remove("correct")
-        this.letters[this.index].classList.remove("indicator")
-        this.letters[this.index].classList.add("wrong")
+        this.modifyClassList(this.letters[this.index], "wrong")
         // this.letters[this.index] = `<span class="wrong">${State.quote.letters[this.index]}</span>`;
         State.statistics.letterMistakes += 1;
 
@@ -195,10 +200,7 @@ class Input {
         if (this.index >= 1) {
             // obscuring current letter in quote
             // >= 1 because the first letter is NEVER obscured (indicator sits there)
-            this.letters[this.index].classList.remove("correct")
-            this.letters[this.index].classList.remove("wrong")
-            this.letters[this.index].classList.remove("indicator")
-            this.letters[this.index].classList.add("obscure")
+            this.modifyClassList(this.letters[this.index], "obscure")
             // this.letters[this.index] = `<span class="obscure">${State.quote.letters[this.index]}</span>`;
         }
 

@@ -1,10 +1,21 @@
-html, body {
-    background: black;
-    color: #ffffff;
-    height: 100%;
-    width: 100%;
+:root {
+    --horizontal-padding: 2em;
+    --vertical-padding: 1.8em;
+    /* old version 231, 231, 231 */
+    --white: rgb(205, 205, 205);
+}
+
+html,
+body {
+    background: rgb(38,38,38);
+    background: -moz-linear-gradient(180deg, rgba(38,38,38,1) 0%, rgba(25,25,25,1) 100%);
+    background: -webkit-linear-gradient(180deg, rgba(38,38,38,1) 0%, rgba(25,25,25,1) 100%);
+    background: linear-gradient(180deg, rgba(38,38,38,1) 0%, rgba(25,25,25,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#262626",endColorstr="#191919",GradientType=1);   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#262626",endColorstr="#212121",GradientType=1);    /* background: #212121; */
+
     margin: 0;
 
+    color: var(--white);
 
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
@@ -14,241 +25,240 @@ html, body {
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
+
+.flex {
+    display: flex;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.align-end {
+    align-items: end;
+}
+
+
 
 
 main {
-    box-sizing: border-box;
-    position: relative;
-    width: 55%;
-    padding-top: 5em;
+    background: #101010;
+
+    width: 50%;
+    height: 100vh;
+
     margin: 0 auto;
-    height: 100%;
-}
-main h1 {
-    margin-top: 0;
 }
 
 
 header {
-    position: relative;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-header h1 {
-    position: absolute;
-    top: 50%;
-    right: 50%;
-    transform: translate(50%, -50%);
-    font-weight: 700;
-}
-header li {
-    font-size: 1.2em;
+    background: #161616;
+
+    height: 10%;
+    width: 100%;
+
+    font-size: .7em;
+
+    padding: 0 var(--horizontal-padding);
 }
 
+#header-logo-container {}
 
+#header-logo-container img {
+    height: 3.3em;
+}
 
-#settings {
-    height: 2em;
-    width: 2em;
+#header-logo-text {
+    margin-left: .5em;
+}
+
+#header-logo-text small {
+    font-weight: 200;
 }
 
 
+
+
+
+#programContainer {
+    /* background is inherited from main background */
+
+    /* consider calculating this instead maybe with calc() */
+    height: 80%;
+    width: 60%;
+
+    margin: 0 auto;
+}
 
 #program {
-    width: 70%;
-    position: absolute;
-    top: 50%;
-    right: 50%;
-    transform: translate(50%, -50%);
+    height: 40%;
 }
 
 
+#programToolbar {
+    height: 15%;
 
-#statsBar {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 2em;
+    background: #2A2A2A;
+
+    padding: .6em var(--horizontal-padding);
+}
+
+#programToolbar select {
+    /* #programToolbar adjustment in height was inherited here... which caused issues. */
+    height: fit-content;
+
+    background: #161616;
+
+    color: var(--white);
+
+    margin-right: 1em;
+}
+
+#programToolbar select:last-child {
+    margin-right: 0;
+}
+
+#programToolbarStatistics {
+    font-size: .8em;
+}
+
+#programToolbarStatistics small {
+    margin-left: .5em;
+}
+
+#programToolbarStatistics .pair {
+    margin-right: .8em;
+}
+
+#programToolbarStatistics .pair:hover {
+    cursor: help;
+}
+
+#programToolbarStatistics .pair:last-child {
+    margin-right: 0;
 }
 
 
+#programQuote {
+    height: 85%;
+    background: #161616;
+    padding: var(--vertical-padding) var(--horizontal-padding);
+    /* make the height of this fixed... */
+}
 
-#quoteInfo {
-    width: 35%;
-    text-align: right;
+#programQuoteFooter {
+    margin-top: var(--vertical-padding);
 }
-#quoteInfo p {
-    color: #FFD971;
+
+#programQuoteInfo {
+    font-size: .9em;
 }
-/* author */
-#quoteInfo small {
+
+#programQuoteOrigin {
+    color: rgb(72, 97, 255);
+}
+
+#programQuoteAuthor {
     color: gray;
 }
 
+#programQuoteActions img {
+    margin-right: .7em;
+}
 
-#temporary {
-    border-radius: .3em;
-    background: rgb(79, 76, 76);
-    padding: .7em 1em;
-    box-sizing: border-box;
+#programQuoteActions img:hover {
+    cursor: pointer;
+}
 
-    display: flex;
-    min-width: 40%;
-    width: 40%;
-    width: fit-content;
-    height: fit-content;
+#programQuoteActions img:last-child {
+    margin-right: 0;
 }
-.pair:first-child {
-}
-.pair {
-    min-width: 25%;
-    width: 25%;
-    display: flex;
-    align-items: center;
-    height: fit-content;
-}
-.pair svg {
-    height: .9em;
-    width: .9em;
-    padding-right: .2em;
-}
-.pair small {
-    height: fit-content;
-}
-.pair path {
-}
-#speedImg {
-    height: 2em;
-}
+
+.programActiveQuoteAction {}
 
 
 
+#programMetadata {
+    height: 35%;
+    background: #2A2A2A;
+    padding: 1em var(--horizontal-padding);
+}
 
-#userInput {
+table {
+    text-align: left;
+    font-size: .8em;
     width: 100%;
-    /* causes text overflow bug */
-    /* word-spacing: .2em; */
-    letter-spacing: 1px;
-    font-size: 1.5em;
-    font-weight: 400;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    /* border: 1px solid black; */
+    padding: .3em 0;
     /* 
-    In JS adding " " to the (p) element does not appear.
-    pre-wrap preserves whitespace so " " does appear.
-     */
-    /* white-space: pre-wrap; */
+    doesn't work
+    
+    text-overflow: ellipsis; */
 }
-#userInput span {
-    margin: 0; padding: 0;
+
+tr {
+    margin: .2em 0;
+    padding: .2em 0;
 }
-input {
-    background: #D9D9D9;
-    font-size: 1.7em;
-    width: 85%;
+
+tr:nth-of-type(odd) {
+    background: #161616;
 }
-.disabled {
-    background: gray;
-}
-#newQuote {
-    width: 2em;
-}
-#typingNewContainer {
-    margin-top: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+
+tr:first-child {
+    background: unset;
 }
 
 
-#statistics {
-    position: absolute;
-    bottom: 100%;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
 
-    /* for now */
-    display: none;
-}
-#statistics div {
-
-}
-
-#userInput .wrong {
-    border-bottom: solid 1px red;
-    position: relative;
-    color: red;
-}
-#userInput .correct {
-    position: relative;
-    color: #FFD971;
-}
-
-
-@keyframes blink {
-    0% {
-        background: white;
-    }
-    25% {
-        background: white;
-    }
-    50% {
-        background: white;
-    }
-    75% {
-        background: white;
-    }
-    100% {
-        background: black;
-    }
-}
-#indicatorContainer {
-    position: relative;
-    color: gray;
-}
-#indicator {
-    margin: 0; padding: 0;
-    position: absolute;
-    right: 100%;
-    width: 1px;
-    background: white;
+#programHistory {
     height: 100%;
-
-    /* background: rgba(0, 0, 0, 100%); */
-    /* color: white; */
-    animation-name: blink;
-    animation-duration: 1000ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: steps(1, start);
-    animation-play-state: running;
-}
-.indicator {
-    color: white;
-}
-
-
-
-.obscure {
-    position: relative;
-    opacity: 50%;
-}
-
-#history {
-    display: none;
 }
 
 
 footer {
-    position: absolute;
-    right: 50%;
-    bottom: 5%;
-    transform: translateX(50%);
-    color: gray;
+    background: #161616;
+
+    /* header also has same height... maybe add root variable */
+    height: 10%;
+    width: 100%;
+
+    font-size: .7em;
+
+    padding: var(--vertical-padding) var(--horizontal-padding);
 }
-#logo {
-    display: inline-block;
-    height: 1.2em;
+
+#footerLogos {
+    width: fit-content;
+}
+
+#footerLogos img:nth-child(even) {
+    margin: auto 1em;
+}
+
+footer ul li {
+    list-style-type: none;
+}
+
+#footerNavigation div:nth-child(even) {
+    margin: 0 1em;
 }

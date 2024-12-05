@@ -3,24 +3,24 @@ class UI {
         State.ui = this;
 
         // E = element
-        this.Etime = UI.find("#timeText");
+        this.timeText = UI.find("#time small");
         this.Ewords = null;
-        this.Emistakes = UI.find("#mistakesText");
+        this.mistakesText = UI.find("#wrong small");
 
         // change #speed to #wpm
-        this.Ewpm = UI.find("#speedText");
+        this.wpmText = UI.find("#speed small");
         this.ErawWpm = null;
-        this.Eaccuracy = UI.find("#accuracyText");
+        this.accuracyText = UI.find("#accuracy small");
 
-        this.Equote = UI.find("#userInput");
-        this.EquoteOrigin = UI.find("#quoteOrigin");
-        this.EquoteAuthor = UI.find("#quoteAuthor");
-        this.Einput = UI.find("input");
+        this.quoteText = UI.find("#quote");
+        this.quoteOrigin = UI.find("#programQuoteOrigin");
+        this.quoteAuthor = UI.find("#programQuoteAuthor");
+        this.input = UI.find("#programTyping");
 
-        this.EnewQuote = UI.find("#newQuote");
+        this.newQuoteButton = UI.find("#newQuoteAction");
         this.listenNewQuote()
 
-        this.Ehistory = UI.find("#history ul");
+        this.Ehistory = UI.find("#programHistory table");
 
         this.abortController = new AbortController();
         this.signal = this.abortController.signal;
@@ -32,9 +32,6 @@ class UI {
     loadHistory() {
         if (localStorage.length != 0) {
             if (JSON.parse(localStorage.getItem("saves")).length != 0) {
-                // remove first child ("Empty")
-                this.Ehistory.removeChild(this.Ehistory.children[0])
-
                 let saves = JSON.parse(localStorage.getItem("saves"));
                 for (const save of saves) {
                     this.#addHistoryToHtml(save)
@@ -47,18 +44,31 @@ class UI {
 
     // used twice in loadHistory() and addHistory()
     #addHistoryToHtml(save) {
-        let listItem = document.createElement("li");
-        listItem.innerText = `${save.wpm}wpm - ${save.accuracy}%`;
-        this.Ehistory.appendChild(listItem)
+        let temp = {
+            "origin": save.origin,
+            "author": save.author,
+            "date": save.date,
+            "type": save.type,
+            "category": save.category,
+            "speed": save.speed
+        };
+        save = temp;
+
+        let row = document.createElement("tr");
+        for (const [key, value] of Object.entries(save)) {
+            console.log(key, value)
+            let td = document.createElement("td");
+            td.innerText = value;
+            row.appendChild(td)
+        }
+        this.Ehistory.appendChild(row)
     }
 
     addHistory() {
-        const empty = UI.find("#e");
-        if (empty) {
-            this.Ehistory.removeChild(empty)
-        }
-
-        let save = State.statistics.getSave();
+        let saves = JSON.parse(localStorage.getItem("saves"));
+        const save = State.statistics.getSave();
+        saves.push(save)
+        localStorage.setItem("saves", JSON.stringify(saves))
 
         this.#addHistoryToHtml(save)
     }
@@ -75,48 +85,48 @@ class UI {
     }
 
     listenNewQuote() {
-        this.EnewQuote.addEventListener("click", () => {
+        this.newQuoteButton.addEventListener("click", () => {
             State.new()
         })
     }
 
     disableInput(disable) {
         if (!disable) {
-            this.Einput.disabled = false;
-            this.Einput.classList.remove("disabled")
+            this.input.disabled = false;
+            this.input.classList.remove("disabled")
         } else {
-            this.Einput.disabled = true;
-            this.Einput.classList.add("disabled")
+            this.input.disabled = true;
+            this.input.classList.add("disabled")
         }
     }
 
     restart() {
         this.stopDisplayingStatistics()
 
-        this.Etime.innerText = "0";
+        this.timeText.innerText = "0";
         // this.Ewords.innerText = "0";
-        this.Emistakes.innerText = "0";
+        this.mistakesText.innerText = "0";
 
-        this.Ewpm.innerText = "0";
+        this.wpmText.innerText = "0";
         // this.ErawWpm.innerText = "0";
-        this.Eaccuracy.innerText = "0";
+        this.accuracyText.innerText = "0";
 
-        this.Equote.innerText = "";
-        this.Einput.value = "";
+        this.quoteText.innerText = "";
+        this.input.value = "";
         this.disableInput(false)
     }
 
     #dt() {
         // displaying time with time elapsed since started typing
-        this.Etime.innerText = parseInt(State.time.elapsed);
+        this.timeText.innerText = parseInt(State.time.elapsed);
         // this.Ewords.innerText = State.statistics.rawWordsTyped;
-        this.Emistakes.innerText = State.statistics.letterMistakes;
+        this.mistakesText.innerText = State.statistics.letterMistakes;
 
         State.statistics.calculate()
 
-        this.Ewpm.innerText = State.statistics.wpm;
+        this.wpmText.innerText = State.statistics.wpm;
         // this.ErawWpm.innerText = State.statistics.rawWpm;
-        this.Eaccuracy.innerText = State.statistics.accuracy;
+        this.accuracyText.innerText = State.statistics.accuracy;
 
 
 
@@ -173,7 +183,7 @@ class UI {
             State.input.letters[State.input.index].classList.remove("indicator")
 
             this.disableInput(true)
-            this.Einput.value = "";
+            this.input.value = "";
 
             this.displayQuote()
         }
@@ -183,13 +193,16 @@ class UI {
         this.abortController.abort()
         this.abortController = new AbortController();
         this.signal = this.abortController.signal;
+        // when we stop displaying statistics its because the user finished the quote
+        // thus we recording the date and time of the finished quote
+        State.statistics.recordDateAndTime()
     }
 
     displayQuote() {
-        this.EquoteOrigin.innerText = State.quote.origin;
-        this.EquoteAuthor.innerText = State.quote.author;
+        this.quoteOrigin.innerText = State.quote.origin;
+        this.quoteAuthor.innerText = State.quote.author;
         for (const letter of State.input.letters) {
-            this.Equote.appendChild(letter)
+            this.quoteText.appendChild(letter)
         }
     }
 

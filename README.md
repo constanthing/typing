@@ -9,6 +9,7 @@ as the issue we have is every time we use innerHTML it messes up the rendering
 
 ### TODO
 #### General 
+- Add custom select element for more flexibility
 - Add settings
 - Add proper nav 
 - Add history

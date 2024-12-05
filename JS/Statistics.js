@@ -5,6 +5,7 @@ class Statistics {
     this.wordsTyped = 0;
     this.rawWordsTyped = 0;
     this.wpm = 0;
+    this.date = null;
     this.rawWpm = 0;
     this.letterMistakes = 0;
     this.wordMistakes = 0;
@@ -18,15 +19,24 @@ class Statistics {
     this.rawWpm = parseInt(this.rawWordsTyped / (elapsedTime / 60));
   }
 
+  recordDateAndTime() {
+    this.date = new Date().toDateString();
+  }
+
   getSave() {
     return {
+      "origin": State.quote.origin,
+      "author": State.quote.author,
+      "date": this.date,
+      "type": State.quote.type,
+      "category": State.quote.category,
       "accuracy": this.accuracy,
       "wordsTyped": this.wordsTyped,
       "rawWordsTyped": this.rawWordsTyped,
-      "wpm": this.wpm,
-      "rawWpm": this.rawWpm,
+      "speed": this.wpm,
+      "rawSpeed": this.rawWpm,
       "letterMistakes": this.letterMistakes,
-      "wordsMistakes": this.wordMistakes,
+      "wordMistakes": this.wordMistakes,
       "attemptedLetters": this.attemptedLetters
     }
   }
@@ -36,6 +46,7 @@ class Statistics {
     this.wordsTyped = 0;
     this.rawWordsTyped = 0;
     this.wpm = 0;
+    this.date = null;
     this.rawWpm = 0;
     this.letterMistakes = 0;
     this.wordMistakes = 0;

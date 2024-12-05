@@ -31,7 +31,7 @@ class Input {
     }
 
     start() {
-        this.input = State.ui.Einput;
+        this.input = State.ui.input;
         this.input.focus()
         // two event listeners added
         if (this.new) {
@@ -147,13 +147,13 @@ class Input {
 
         // finished quote
         if (this.index >= State.quote.length + 1) {
-            // add results to history
-            State.ui.addHistory()
-
             State.time.stop()
             State.ui.stopDisplayingStatistics()
             State.ui.disableInput(true)
             this.clearInput(e)
+
+            // add results to history
+            State.ui.addHistory()
         }
 
     }

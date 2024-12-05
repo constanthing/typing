@@ -1,22 +1,170 @@
 <!doctype html>
 <html>
-    <head>
-        <title>tieping</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-            rel="stylesheet">
-        <link rel="stylesheet" href="index.css" />
-    </head>
-    <body>
-        
-        <script src="JS/Quote.js"></script>
-        <script src="JS/UI.js"></script>
-        <script src="JS/Input.js"></script>
-        <script src="JS/Indicator.js"></script>
-        <script src="JS/Time.js"></script>
-        <script src="JS/Statistics.js"></script>
-        <script src="JS/index.js"></script>
-    </body>
+
+<head>
+    <title>tieping</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+    <main>
+        <header class="flex space-between align-center">
+            <div id="header-logo-container" class="flex align-center">
+                <img src="./illus/logo.svg" alt="Tie Logo" />
+                <div id="header-logo-text">
+                    <h1>tieping</h1>
+                    <small>practice makes perfect</small>
+                </div>
+            </div>
+            <img src="./illus/account.svg" alt="Person Avatar" />
+        </header>
+
+        <section id="programContainer" class="flex column justify-center">
+
+            <div id="program">
+                <div id="programToolbar" class="flex space-between align-center">
+                    <div class="flex">
+                        <!-- make custom select for more flexibility -->
+                        <select name="Type" id="">
+                            <!-- add: more -->
+                            <option value="1">Quote</option>
+                            <option value="2">Words</option>
+                            <option value="3">Code</option>
+                            <option value="4">Custom</option>
+                        </select>
+                        <select name="Category" id="">
+                            <!-- add: subcategories too -->
+                            <option value="1">Motivation</option>
+                            <option value="2">Comedy</option>
+                            <option value="3">Fictional</option>
+                        </select>
+                    </div>
+                    <div id="programToolbarStatistics" class="flex">
+                        <div id="time" class="pair flex align-center">
+                            <img src="./illus/time.svg" alt="Clock Icon" title="Time" />
+                            <small>0</small>
+                        </div>
+                        <div id="wrong" class="pair flex align-center">
+                            <img src="./illus/wrong.svg" alt="X Icon" title="Wrong Letters" />
+                            <small>0</small>
+                        </div>
+                        <div id="accuracy" class="pair flex align-center">
+                            <img src="./illus/accuracy.svg" alt="Accuracy Icon" title="Accuracy" />
+                            <small>0</small>
+                        </div>
+                        <div id="speed" class="pair flex align-center">
+                            <img src="./illus/speed.svg" alt="Speed Icon" title="Speed (WPM)" />
+                            <small>0</small>
+                        </div>
+                    </div>
+                </div>
+                <div id="programQuote" class="flex column space-between">
+                    <div id="quoteTyping">
+                        <p id="quote">
+                        </p>
+                        <input type="text" id="programTyping" />
+                        <div id="waitingScreen">
+
+                        </div>
+                    </div>
+                    <div id="programQuoteFooter" class="flex space-between align-end">
+                        <div id="programQuoteInfo">
+                            <h4 id="programQuoteOrigin">Divine Intervention</h4>
+                            <small id="programQuoteAuthor">by <em>Chris Chandelman</em></small>
+                        </div>
+                        <div id="programQuoteActions" class="flex">
+                            <img src="./illus/repeat.svg" alt="Repeat Icon" />
+                            <img src="./illus/computer.svg" alt="CPU Icon" />
+                            <img src="./illus/graph.svg" alt="Graph Icon" class="programActiveQuoteAction" />
+                            <img src="./illus/history.svg" alt="History Icon" />
+                            <img src="./illus/next.svg" alt="Arrow Icon" id="newQuoteAction"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section id="programMetadata">
+                <section id="programHistory">
+
+                    <table>
+                        <tr>
+                            <th scope="col">Source</th>
+                            <th scope="col">Origin</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Speed</th>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+        </section>
+
+        <footer class="flex space-between align-center">
+            <section id="footerLogos" class="flex space-between">
+                <img src="./illus/cat.svg" alt="GitHub Icon" />
+                <img src="./illus/twitter.svg" alt="Twitter Icon" />
+                <img src="./illus/coffee.svg" alt="Coffee Icon" />
+            </section>
+
+            <section id="contributeContainer">
+                <!-- will change between quotes -->
+                <p>have an idea?</p>
+            </section>
+
+
+            <section id="footerNavigation" class="flex">
+                <div>
+                    <h3>General</h3>
+                    <ul>
+                        <li>learn</li>
+                        <li>blog</li>
+                        <li>contribute</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>PvP</h3>
+                    <ul>
+                        <li>compete</li>
+                        <li>tournaments</li>
+                        <li>leaderboard</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Account</h3>
+                    <ul>
+                        <li>statistics</li>
+                        <li>history</li>
+                        <li>settings</li>
+                    </ul>
+                </div>
+                <div>
+                    <!-- temporary don't want this to be final solution to
+                     having a section with multiple lists (space in replacement for
+                     formatting) -->
+                    <h3>&nbsp;</h3>
+                    <ul>
+                        <li>theme</li>
+                    </ul>
+                </div>
+
+            </section>
+        </footer>
+    </main>
+
+    <script src="JS/Quote.js"></script>
+    <script src="JS/UI.js"></script>
+    <script src="JS/Input.js"></script>
+    <script src="JS/Indicator.js"></script>
+    <script src="JS/Time.js"></script>
+    <script src="JS/Statistics.js"></script>
+    <script src="JS/index.js"></script>
+</body>
+
 </html>
